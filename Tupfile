@@ -1,0 +1,38 @@
+vrelease = j804
+ifeq (@(X86_64),y)
+ varch = j64
+else
+ varch = j32
+endif
+vplatform = unknown
+vdesc = release
+vbuild = unbox-v0
+vlink = t@iocane.net
+vdate = 2016-01-15 19:34:00
+
+src_lib = src/libj/*.c
+src_con = src/jconsole/*.c
+
+include config/@(TUP_PLATFORM)
+
+# tests
+ifeq (@(TEST),y)
+ tdeps = $(jcon) $(libj) bin/*.ijs
+ !test = | $(tdeps) |> ^ TEST %f^ $(jcon) -test $(t) build/test %b |> build/test/%b.pass
+
+ t = test/core
+ : foreach $(t)/*.ijs |> !test |>
+
+ t = test/dll
+ : foreach $(t)/*.ijs | bin/tsdll.$(so) |> !test |>
+
+ t = test/files
+ : foreach $(t)/*.ijs |> !test |>
+
+ t = test/sparse
+ : foreach $(t)/*.ijs |> !test |>
+
+ t = test/stack
+ : foreach $(t)/*.ijs |> !test |>
+endif
+

@@ -1,0 +1,55 @@
+vplatform = windows
+
+CC = cl /nologo
+
+src_lib += src\libj\win\*.c src\libj\win\*.cpp
+
+so = dll
+lib_cflags = /c /D_JDLL /DWIN64
+lib_lflags = OleAut32.lib AdvApi32.lib Ole32.lib src\libj\win\winasm64.obj src\libj\win\jdll.def
+lib_extra = bin\j.lib bin\j.exp
+con_cflags = /c /DWIN64
+con_lflags = /STACK:8096000
+con_extra = 
+
+ifeq (@(RELEASE),n)
+ lib_cflags += /Od /Z7 /DDEBUG 
+ lib_lflags += /LDd /link /DEBUG
+ lib_extra  += bin\j.pdb bin\j.ilk
+ con_cflags += /Od /Z7
+ con_lflags += /DEBUG
+ con_extra  += bin\jconsole.pdb bin\jconsole.ilk
+else
+ lib_lflags += /LD 
+ lib_cflags += /Ox /DNDEBUG
+endif
+
+jver = src\libj\jver.h
+libj = bin\j.dll
+jcon = bin\jconsole.exe
+prof = bin\profile.ijs
+defdir = src\libj\defs
+
+# version
+jversion = $(vrelease)/$(varch)/$(vplatform)/$(vdesc)/$(vbuild)/$(vlink)/$(vdate)
+: |> echo #define JVERSION "$(jversion)" > %o |> $(jver)
+
+# libj
+: foreach $(src_lib) | $(jver) |> ^ CC %f^ $(CC) $(lib_cflags) /Fo%o %f |> build/%B.obj {lib}
+: {lib} |> ^ LINK %f^ $(CC) %f /Fe%o $(lib_lflags) |> bin/j.dll | $(lib_extra)
+
+# profile
+: foreach src\jconsole\*.ijs |> ^ COPY %f ==> %o^ cmd /C copy %f %o |> bin\%B.ijs {prof}
+
+# jconsole
+: foreach $(src_con) |> ^ CC %f^ $(CC) $(con_cflags) /Isrc\libj %f /Fo%o |> build/%B.obj {con}
+: {con}              |> ^ LINK %f^ $(CC) %f /Fe%o /link $(con_lflags) |> bin/jconsole.exe | $(con_extra)
+
+# defs
+: foreach $(defdir)\*.sym | $(libj) $(jcon) {prof} |> ^ SYM2IJS %f^ $(jcon) -sym2ijs $(defdir)/ %B |> $(defdir)/%B.c
+: foreach $(defdir)\*.c |> ^ CC %f^ $(CC) %f /I$(defdir) /Fobin\%B.obj /Fe%o |> bin\%B.exe | bin\%B.obj {defs}
+: foreach {defs} |> ^ DEFS %f^ %f > %o |> bin\%B.ijs
+
+# test dll
+: test\dll\tsdll.c |> ^ CC %f^ $(CC) %f /Fobin\%B.obj /Fe%o /LD |> bin\%B.$(so) | bin\%B.obj bin\%B.exp bin\%B.lib
+

@@ -1,0 +1,71 @@
+vplatform = linux
+
+so = so
+lib_cflags = -DNOASM -fPIC
+lib_lflags = -shared -lm
+con_cflags = 
+con_lflags = -lm -ldl
+
+ifeq (@(CLANG),y)
+ CC = clang
+ CC += -Wno-parentheses -Wno-unused-value -Wno-pointer-sign
+ CC += -Wno-empty-body -Wno-return-type -Wno-constant-logical-operand
+ CC += -Wno-comment -Wno-string-plus-int -Wno-unsequenced
+ lib_cflags += -O1
+ con_cflags += -O1
+else
+ CC = gcc
+ lib_cflags += -O2
+ con_cflags += -O2
+endif
+
+ifeq (@(X86_64),y)
+ lib_cflags += -D_UNIX64
+else
+ lib_cflags += -m32
+ lib_lflags += -m32
+ con_cflags += -m32
+ con_lflags += -m32
+endif
+
+ifeq (@(READLINE),y)
+ con_cflags += -DREADLINE
+ con_lflags += -lreadline
+endif
+
+ifeq (@(RELEASE),n)
+ lib_cflags += -g3 -ggdb3 -gdwarf-4 -DDEBUG
+ con_cflags += -g3 -ggdb3 -gdwarf-4
+else
+ lib_cflags += -fomit-frame-pointer
+ con_cflags += -fomit-frame-pointer
+endif
+
+jver = src/libj/jver.h
+libj = bin/libj.so
+jcon = bin/jconsole
+defdir = src/libj/defs
+
+# version
+jversion = $(vrelease)/$(varch)/$(vplatform)/$(vdesc)/$(vbuild)/$(vlink)/$(vdate)
+: |> echo '#define JVERSION "$(jversion)"' > %o |> $(jver)
+
+# libj
+: foreach $(src_lib) | $(jver) |> ^ CC %f^ $(CC) $(lib_cflags) -c %f -o %o |> build/%B.o {libj}
+: {libj} |> ^ LINK %f^ $(CC) %f -o %o $(lib_lflags) |> $(libj)
+
+# profile
+: foreach src/jconsole/*.ijs |> ^ COPY %f ==> %o^ cp %f %o |> bin/%b {prof}
+
+# jconsole
+: foreach $(src_con) |> ^ CC %f^ $(CC) $(con_cflags) -Isrc/libj -c %f -o %o |> build/%B.o {jconsole}
+: {jconsole} | $(libj) {prof} |> ^ LINK %f^ $(CC) %f -o %o $(con_lflags) |> $(jcon)
+
+# defs
+: foreach $(defdir)/*.sym | $(libj) $(jcon) {prof} |> ^ SYM2IJS %f^ $(jcon) -sym2ijs $(defdir)/ %B |> $(defdir)/%B.c
+: foreach $(defdir)/*.c |> ^ CC %f^ $(CC) %f -o %o |> bin/%B {defs}
+: foreach {defs} |> ^ DEFS %f^ %f > %o |> bin/%B.ijs
+
+# test dll
+: test/dll/tsdll.c |> ^ CC %f^ $(CC) %f -shared -fPIC -o %o |> bin/%B.$(so)
+
