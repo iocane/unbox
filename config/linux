@@ -11,12 +11,10 @@ ifeq (@(CLANG),y)
  CC += -Wno-parentheses -Wno-unused-value -Wno-pointer-sign
  CC += -Wno-empty-body -Wno-return-type -Wno-constant-logical-operand
  CC += -Wno-comment -Wno-string-plus-int -Wno-unsequenced
- lib_cflags += -O1
- con_cflags += -O1
+ optlevel = -O1
 else
  CC = gcc
- lib_cflags += -O2
- con_cflags += -O2
+ optlevel = -O2
 endif
 
 ifeq (@(X86_64),y)
@@ -37,8 +35,8 @@ ifeq (@(RELEASE),n)
  lib_cflags += -g3 -ggdb3 -gdwarf-4 -DDEBUG
  con_cflags += -g3 -ggdb3 -gdwarf-4
 else
- lib_cflags += -fomit-frame-pointer
- con_cflags += -fomit-frame-pointer
+ lib_cflags += $(optlevel) -fomit-frame-pointer
+ con_cflags += $(optlevel) -fomit-frame-pointer
 endif
 
 jver = src/libj/jver.h
