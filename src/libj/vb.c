@@ -67,12 +67,12 @@ static I jtebarprep(J jt,A a,A w,A*za,A*zw,I*zc){I ar,at,c=0,ca,cw,d=IMAX,da,dw,
  if(m&&n)RE(t=maxtype(at,wt)) else t=m?at:n?wt:B01;
  if(t!=at)RZ(a=cvt(t,a));
  if(t!=wt)RZ(w=cvt(t,w));
- *za=a; *zw=w; *zc=c;
+ *za=a; *zw=w;
  if(1<wr)R 2==wr?-2:-3;
  switch(t){
   case INT: irange(m,AV(a),&ca,&da); if(da)irange(n,AV(w),&cw,&dw); 
             if(da&&dw){c=MIN(ca,cw); d=MAX(ca+da,cw+dw)-c;} 
-            if(0<c&&c+d<=4*n){d+=c; c=0;} break;
+            if(0<c&&c+d<=4*n){d+=c; c=0;} *zc=c; break;
   case C2T: d=65536; break;
   case LIT: d=256;   break;
   case B01: d=2;     break;
