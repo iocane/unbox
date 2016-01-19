@@ -294,17 +294,18 @@ static DF2(jtinfix){PROLOG;DECLF;A x,z;I m;
  EPILOG(z);
 }
 
-static DF2(jtinfix2){PROLOG;A f,x,y;B d;I c,m,n,n1,r,*s,t; 
+static DF2(jtinfix2){PROLOG;A f,x,y;B af,d;I c,m,n,n1,r,*s,t; 
  PREF2(jtinfix); 
  RE(m=i0(vib(a))); t=AT(w); n=IC(w); 
  if(!(2==m&&2<=n&&t&DENSE))R infix(a,w,self);
- c=AN(w)/n; d=1&&t&DIRECT; r=AR(w); s=AS(w); n1=n-1;
+ f=VAV(self)->f; f=VAV(f)->f;
+ af=vaid(f); d=af&&t&DIRECT;
+ c=AN(w)/n; r=AR(w); s=AS(w); n1=n-1;
  if(d             ){RZ(x=gah(r,w)); ICPY(AS(x),s,r); *AS(x)=n1; AN(x)=c*n1;} 
  else RZ(x=curtail(w));
  if(d&!(t&IS1BYTE)){RZ(y=gah(r,w)); ICPY(AS(y),s,r); *AS(y)=n1; AN(y)=c*n1; AK(y)=AK(w)+(I)w+c*bp(t)-(I)y;}
  else RZ(y= behead(w));
- f=VAV(self)->f; f=VAV(f)->f;
- EPILOG(df2(x,y,vaid(f)?f:qq(f,num[-1])));
+ EPILOG(df2(x,y,af?f:qq(f,num[-1])));
 }    /* 2 f/\w */
 
 static DF2(jtginfix){A h,*hv,x,z,*zv;I d,m,n;

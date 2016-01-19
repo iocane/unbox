@@ -1,7 +1,7 @@
 vplatform = linux
 
 so = so
-lib_cflags = -DNOASM -fPIC
+lib_cflags = -DC_NA=1 -fPIC
 lib_lflags = -shared -lm
 con_cflags = 
 con_lflags = -lm -ldl

@@ -3,7 +3,9 @@
 /*                                                                         */
 /* Global Definitions                                                      */
 
+#ifndef SYS // include js.h only once - dtoa.c
 #include "js.h"
+#endif
 
 #if SY_WINCE
 #include "..\cesrc\cecompat.h"
@@ -24,7 +26,7 @@
 #include <sys/types.h>
 #endif
 
-#if (SYS & SYS_ANSILIB)
+#if 1
 #include <float.h>
 #include <limits.h>
 #define link unused_syscall_link
@@ -52,12 +54,19 @@
 #define FMTI04          "%04lli"
 #define FMTI05          "%05lli"
 
+#if SY_WIN32
+#define strtoI         _strtoi64
+#else
+#define strtoI          strtoll
+#endif
+
 #else
 #define IMAX            2147483647L
 #define FMTI            "%li"
 #define FMTI02          "%02li"
 #define FMTI04          "%04li"
 #define FMTI05          "%05li"
+#define strtoI          strtol
 #endif
 
 #define IMIN            (~IMAX)   /* ANSI C LONG_MIN is  -LONG_MAX */
@@ -112,7 +121,7 @@
 #define XNAN            "\000\000\000\000\000\000\370\177"
 #endif
 
-#if (SYS & SYS_LILENDIAN)
+#if C_LE
 #ifndef XINF
 #define XINF            "\000\000\000\000\000\000\360\177"
 #define XNAN            "\000\000\000\000\000\000\370\377"
@@ -194,12 +203,7 @@
 #define IPHALLEPS       43
 #define IPHIFBEPS       44
 
-
-#if SY_64 && SY_WIN32
-#define jfloor          jfloor1
-#else
 #define jfloor          floor
-#endif          
 
 #define BB              8      /* # bits in a byte */
 #if SY_64
@@ -267,7 +271,7 @@
 #define VAL2            '\002'
 
 
-#if SYS & SYS_LILENDIAN
+#if C_LE
 #define B0000   0x00000000
 #define B0001   0x01000000
 #define B0010   0x00010000
@@ -334,9 +338,9 @@
 #define JPF(s,v) {char b[1000]; sprintf(b, s, v); jsto(gjt,MTYOFM,b);}
 extern J gjt; // global for JPF (procs without jt)
 
-#if SY_WINCE_MIPS
+#if SY_WINCE_MIPS || defined(__arm__)
 /* strchr fails for CE MIPS - neg chars - spellit fails in ws.c for f=.+.  */
-#define strchr(a,b)     strchr(a, (UC)b)
+#define strchr(a,b)     (C*)strchr(a, (UC)b)
 #endif
 
 #if SYS & SYS_UNIX

@@ -390,13 +390,13 @@ static DF1(jtreducesp){A a,g,x,y,z;B b;C id;I cv,f,n,r,rr[2],*v,wn,wr,*ws,wt,zt;
                          else   DO(m,       x=*u++; y=*u++; *zv++=F(x,y);              ); \
                         }
 #define BTABIFX(F)      {btab[0                        ]=0 F 0;  \
-                         btab[SYS&SYS_LILENDIAN?256:  1]=0 F 1;  \
-                         btab[SYS&SYS_LILENDIAN?  1:256]=1 F 0;  \
+                         btab[C_LE?256:  1]=0 F 1;  \
+                         btab[C_LE?  1:256]=1 F 0;  \
                          btab[257                      ]=1 F 1;  \
                         }
 #define BTABPFX(F)      {btab[0                        ]=F(0,0); \
-                         btab[SYS&SYS_LILENDIAN?256:  1]=F(0,1); \
-                         btab[SYS&SYS_LILENDIAN?  1:256]=F(1,0); \
+                         btab[C_LE?256:  1]=F(0,1); \
+                         btab[C_LE?  1:256]=F(1,0); \
                          btab[257                      ]=F(1,1); \
                         }
 #define BR2CASE(t,id)   ((id)+256*(t))

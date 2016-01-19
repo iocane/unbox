@@ -127,7 +127,7 @@ static GF(jtgrd){A x,y;B b;D*v,*wv;I d,e,*g,*h,i,k,p,q,*xv,*yv;int up;US*u;
  p=65536; q=p/2; up=1==jt->compgt; wv=DAV(w);
  GA(y,INT,p,1,0); yv=AV(y);
  GA(x,INT,n,1,0); xv=AV(x);
-#if SYS & SYS_LILENDIAN
+#if C_LE
  d= 1; e=0;
 #else
  d=-1; e=3;
@@ -156,7 +156,7 @@ static GF(jtgri1){A x,y;I*wv;I d,e,i,p,*xv,*yv;int up;US*u;
  GA(y,INT,p,1,0); yv=AV(y);
  GA(x,INT,n,1,0); xv=AV(x);
  e=SY_64?3:1;
-#if SYS & SYS_LILENDIAN
+#if C_LE
   d= 1; 
 #else
   d=-1;
@@ -264,7 +264,7 @@ static GF(jtgrc){A x;B b,q,up;I d,e,i,p,ps,*xv,yv[256];UC*vv,*wv;
  d=C2T&AT(w)?2*c/n:c/n;
  if(d>log((D)n))R grx(m,c,n,w,zv); 
  p=B01&AT(w)?2:256; ps=p*SZI; wv=UAV(w); up=1==jt->compgt;
- q=C2T&AT(w) && SYS&SYS_LILENDIAN;
+ q=C2T&AT(w) && C_LE;
  if(1<d){GA(x,INT,n,1,0); xv=AV(x);}
  for(i=0;i<m;++i){
   b=(B)(d%2); if(q){e=-3; vv=wv+d-2;}else{e=-1; vv=wv+d-1;}

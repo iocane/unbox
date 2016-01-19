@@ -33,7 +33,7 @@ F1(jtstype){RZ(w); R sc(AT(w));}
 #define BR(d,a)         ((C*)(a)+3*WS(d))       /* rank                            */
 #define BS(d,a)         ((C*)(a)+4*WS(d))       /* shape                           */
 #define BV(d,a,r)       (BS(d,a)+(r)*WS(d))     /* value                           */
-#define BU              (SYS & SYS_LILENDIAN ? 1 : 0)
+#define BU              (C_LE ? 1 : 0)
 
 
 static I bsize(B d,B tb,I t,I n,I r,I*s){I c,k,m,w,z;

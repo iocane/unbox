@@ -5,7 +5,7 @@ CC = cl /nologo
 src_lib += src\libj\win\*.c src\libj\win\*.cpp
 
 so = dll
-lib_cflags = /c /D_JDLL /DWIN64
+lib_cflags = /c /D_JDLL /DC_NA=0 /DWIN64
 lib_lflags = OleAut32.lib AdvApi32.lib Ole32.lib src\libj\win\winasm64.obj src\libj\win\jdll.def
 lib_extra = bin\j.lib bin\j.exp
 con_cflags = /c /DWIN64

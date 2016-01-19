@@ -41,3 +41,9 @@ Tests
 To run the test suite set the `CONFIG_TEST=y` in tup.config and rerun tup.
 
 If a test fails run `bin/jconsole -debug test/<path-to-test>` to see where the failure is occuring.
+
+Contributing
+------------
+
+If you would like to contribute code changes, you can either send a patch or commit to 
+the `develop` branch in your local repository and submit a pull request.

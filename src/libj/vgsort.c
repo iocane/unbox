@@ -113,7 +113,7 @@ static SF(jtsorti1){A x,y,z;I*wv;I d,e,i,p,q,*xv,*yv,*zv;int up;
  GA(y,INT,p,1,0); yv=AV(y);
  GA(x,INT,n,1,0); xv=AV(x);
  e=SY_64?3:1;
-#if SYS & SYS_LILENDIAN
+#if C_LE
   d= 1; 
 #else
   d=-1;
@@ -137,7 +137,7 @@ static SF(jtsortd){A x,y,z;B b;D*g,*h,*xu,*wv,*zu;I d,e,i,k,p,q,*yv;int up;
  p=65536; q=p/2; up=1==jt->compgt; wv=DAV(w); zu=DAV(z);
  GA(y,INT,p,1,0); yv=AV(y);
  GA(x,FL, n,1,0); xu=DAV(x);
-#if SYS & SYS_LILENDIAN
+#if C_LE
  d= 1; e=0;
 #else
  d=-1; e=3;

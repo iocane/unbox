@@ -35,18 +35,6 @@ I jtprod(J jt,I n,I*v){D z=1; DO(n, z*=(D)v[i];); ASSERT(z<=IMAX,EVLIMIT); R(I)z
 
 #endif
 
-
-#if SY_64 && SY_WIN32
-#pragma message("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Win64 bug workaround")      
-D jfloor1(D x){D y;
- if(-2.0e9<=x&&x<=2.0e9)R floor(x);
- if(x<-4.51e15||4.51e15<x)R x;
- y=x; *((I*)&y)&=0xffffffffff000000; 
- R y+floor(x-y);
-}    /* workaround for Windows 64 bit bug */
-#endif
-
-
 B all0(A w){RZ(w); R !memchr(AV(w),C1,AN(w));}
 
 B all1(A w){RZ(w); R !memchr(AV(w),C0,AN(w));}

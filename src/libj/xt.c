@@ -13,7 +13,7 @@
 #if !SY_WINCE && (SY_WIN32 || (SYS & SYS_LINUX))
 #include <time.h>
 #else
-#if (SY_GETTOD && !(SYS&SYS_IBMRS6000))
+#if SYS & SYS_UNIX
 #include <sys/time.h>
 #endif
 #endif

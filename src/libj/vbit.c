@@ -54,7 +54,7 @@ static UI bitmask(I c){I rc;UI mask;
  mask=0;
  if(rc=c%BW){
   mask=(~mask)<<(BW-rc);
-#if SYS & SYS_LILENDIAN
+#if C_LE
   {UC c,*v=(UC*)&mask;I j=SZI; DO(SZI/2, --j; c=v[i]; v[i]=v[j]; v[j]=c;);}
 #endif
  }

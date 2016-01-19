@@ -11,8 +11,7 @@
 /* fp   zv=.+/\ xv    1<n */
 /* fs   zv=.+/\.xv    1<n */
 
-#ifndef NOASM /* builder defines NOASM to do I overflow in C instead of asm */
-
+#if !C_NA
 #if SY_WIN32 && !SY_64 && !SY_WINCE
 #define OVF
 
