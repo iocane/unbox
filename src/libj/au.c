@@ -13,7 +13,7 @@ static I jtfdepger(J jt,A w){A*wv;I d=0,k,wd;
 }
 
 I jtfdep(J jt,A w){A f,g;I d=0,k;V*v;
- RZ(w);
+ RZ(w); if(!(FUNC&AT(w))) R 0;
  v=VAV(w);
  if(v->fdep)R v->fdep;
  if(f=v->f) d=VERB&AT(f)?fdep(f):NOUN&AT(f)&&VGERL&v->flag?fdepger(f):0;
