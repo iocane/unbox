@@ -109,7 +109,7 @@ f	msg_name
 f	msg_namelen
 f	msg_iov
 f	msg_iovlen
-#if defined(linux) || defined(Darwin)
+#if defined(linux) || defined(__APPLE__) && defined(__MACH__)
 f	msg_control
 f	msg_controllen
 f	msg_flags

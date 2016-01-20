@@ -58,7 +58,7 @@ r;s
 NB. =========================================================
 j=. cutopen (0 : 0) rplc '~',TAB
 #define offset(r,f) (((char*)&((r*)0)->f)-((char*)((r*)0)))
-void main(){
+int main(){
 ~printf ("NB. do not edit -- created by sym2ijs\n\n");
 ~printf ("cocurrent <'jdefs'\n\n");
 )
