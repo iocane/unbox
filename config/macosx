@@ -1,7 +1,7 @@
 vplatform = macosx
 
 so = so
-lib_cflags = -DNOASM -fPIC
+lib_cflags = -fPIC
 lib_lflags = -shared -lm
 con_cflags = 
 con_lflags = -lm -ldl
@@ -52,7 +52,8 @@ jversion = $(vrelease)/$(varch)/$(vplatform)/$(vdesc)/$(vbuild)/$(vlink)/$(vdate
 
 # libj
 : foreach $(src_lib) | $(jver) |> ^ CC %f^ $(CC) $(lib_cflags) -c %f -o %o |> build/%B.o {libj}
-: {libj} |> ^ LINK %f^ $(CC) %f -o %o $(lib_lflags) |> $(libj)
+: {libj} |> ^ LINK %f^ $(CC) %f src/libj/macosx/asm-macasm64.o -o %o $(lib_lflags) |> $(libj)
+#: {libj} |> ^ LINK %f^ $(CC) %f -o %o $(lib_lflags) |> $(libj)
 
 # profile
 : foreach src/jconsole/*.ijs |> ^ COPY %f ==> %o^ cp %f %o |> bin/%b {prof}

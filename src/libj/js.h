@@ -18,7 +18,7 @@
 #endif
 
 #ifndef C_NA // noasm/asm
-#define C_NA 1
+#define C_NA 0
 #endif
 
 /*
