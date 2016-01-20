@@ -109,14 +109,9 @@ f	msg_name
 f	msg_namelen
 f	msg_iov
 f	msg_iovlen
-#if defined(linux) || defined(Darwin)
 f	msg_control
 f	msg_controllen
 f	msg_flags
-#else
-f	msg_accrights
-f	msg_accrightslen
-#endif
 #endif
 
 #ifdef _WIN32
