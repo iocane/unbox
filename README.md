@@ -45,5 +45,8 @@ If a test fails run `bin/jconsole -debug test/<path-to-test>` to see where the f
 Contributing
 ------------
 
-If you would like to contribute code changes, you can either send a patch or commit to 
-the `develop` branch in your local repository and submit a pull request.
+The preferred ways to contribute code are:
+1. Send me a patch and I will review it and apply it to the develop branch
+2. Make a new branch off of `develop`, e.g., `myfeature`, and make your changes
+   in that branch. When you are done with your changes create a pull request on
+   Github and I will pull, test/edit and then merge into develop.
