@@ -1,5 +1,4 @@
 vplatform = linux
-
 so = so
 lib_cflags = -DC_NA=1 -fPIC
 lib_lflags = -shared -lm
@@ -32,8 +31,8 @@ ifeq (@(READLINE),y)
 endif
 
 ifeq (@(RELEASE),n)
- lib_cflags += -g3 -ggdb3 -gdwarf-4 -DDEBUG
- con_cflags += -g3 -ggdb3 -gdwarf-4
+ lib_cflags += -O0 -g3 -ggdb3 -gdwarf-4 -DDEBUG
+ con_cflags += -O0 -g3 -ggdb3 -gdwarf-4
 else
  lib_cflags += $(optlevel) -fomit-frame-pointer
  con_cflags += $(optlevel) -fomit-frame-pointer
@@ -45,8 +44,7 @@ jcon = bin/jconsole
 defdir = src/libj/defs
 
 # version
-jversion = $(vrelease)/$(varch)/$(vplatform)/$(vdesc)/$(vbuild)/$(vlink)/$(vdate)
-: |> echo '#define JVERSION "$(jversion)"' > %o |> $(jver)
+: |> config/jversion.sh $(vrelease) $(varch) $(vlink) $(vplatform) > $(jver) |> $(jver)
 
 # libj
 : foreach $(src_lib) | $(jver) |> ^ CC %f^ $(CC) $(lib_cflags) -c %f -o %o |> build/%B.o {libj}
