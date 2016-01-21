@@ -1,16 +1,14 @@
 vplatform = windows
-
-CC = cl /nologo
-
-src_lib += src\libj\win\*.c src\libj\win\*.cpp
-
 so = dll
+src_lib += src\libj\win\*.c src\libj\win\*.cpp
 lib_cflags = /c /D_JDLL /DC_NA=0 /DWIN64
 lib_lflags = OleAut32.lib AdvApi32.lib Ole32.lib src\libj\win\winasm64.obj src\libj\win\jdll.def
 lib_extra = bin\j.lib bin\j.exp
 con_cflags = /c /DWIN64
 con_lflags = /STACK:8096000
 con_extra = 
+
+CC = cl /nologo
 
 ifeq (@(RELEASE),n)
  lib_cflags += /Od /Z7 /DDEBUG 
@@ -31,8 +29,7 @@ prof = bin\profile.ijs
 defdir = src\libj\defs
 
 # version
-jversion = $(vrelease)/$(varch)/$(vplatform)/$(vdesc)/$(vbuild)/$(vlink)/$(vdate)
-: |> echo #define JVERSION "$(jversion)" > %o |> $(jver)
+: |> config\jversion.bat $(vrelease) $(varch) $(vlink) $(vplatform) > $(jver) |> $(jver)
 
 # libj
 : foreach $(src_lib) | $(jver) |> ^ CC %f^ $(CC) $(lib_cflags) /Fo%o %f |> build/%B.obj {lib}

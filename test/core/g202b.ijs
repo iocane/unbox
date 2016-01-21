@@ -95,6 +95,8 @@ test=: 3 : 0
 
 test"0 ] 10^i.4
 
+'value error'  -: ]^:(1:`(<,'0';NAME    )) etx 0
+'domain error' -: ]^:(1:`(<,'0';'string')) etx 0
 
 4!:55 ;:'boxed_rec f indexlim r randomfile rec rec1 spleak'
 4!:55 ;:'test x x2288 y2288'

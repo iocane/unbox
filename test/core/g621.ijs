@@ -113,10 +113,14 @@ f/+/\?5 10
 0 f 5
 5 f 5
 
+NB. Bug report from Marshall Lochbaum
+NB. Test non-function assignment following unassigned name in gerund
+verb=: 0:`NOUN@.(0=#)
+NOUN =: 'string',LF
+'domain error' -: verb etx ''
 
 4!:55 ;:'ack agenda ar c1 c2 c3 basis decr do erf f f0 f1 form from from1 '
 4!:55 ;:'g ifopen ind mask '
 4!:55 ;:'n01cdf n01cdfa n01cdfh n01cdfn n01cdfp n01cdfr n01pdf '
 4!:55 ;:'part pfx recur square start t test x z '
-
-
+4!:55 ;:'verb NOUN'
