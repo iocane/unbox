@@ -13,12 +13,12 @@ Building
 
 1. Unbox uses the tup build system. [Install tup for your platform](http://gittup.org/tup/index.html).
 2. Clone the repository
-3. Edit tup.config
-   + `CONFIG_RELEASE`: toggle the optimizations / debugging information
-   + `CONFIG_TEST`: toggle whether or not to run the test script suite after a successful build
-   + `CONFIG_CLANG`: y to use clang instead of gcc on Linux
-   + `CONFIG_X86_64`: toggle 64/32 bit build
-   + `CONFIG_READLINE`: toggle readline support for jconsole on Linux
+3. (Optionally) Edit tup.config
+   + `CONFIG_RELEASE`: default `y` means optimizations are on and debugging information is off
+   + `CONFIG_TEST`: default `y` means run the test script suite after a successful build
+   + `CONFIG_X86_64`: default `y` means use 64 bit build, `n` means 32 bit build
+   + `CONFIG_READLINE`: default `y` means to use compile with readline support on Linux/OSX
+   + `CONFIG_CLANG`: default `n` means use gcc instead of clang on Linux/OSX
 
 ### Linux
 
@@ -33,7 +33,8 @@ Building
 
 ### Mac
 
-I do not have access to a Mac and have not tried building this yet. If you are a Mac user, please test and report your results and I will update this section.
+1. Make sure tup is in your PATH
+2. type `tup` in the working directory
 
 Tests
 -----
