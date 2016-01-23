@@ -52,7 +52,6 @@ jversion = $(vrelease)/$(varch)/$(vplatform)/$(vdesc)/$(vbuild)/$(vlink)/$(vdate
 
 # libj
 : foreach $(src_lib) | $(jver) |> ^ CC %f^ $(CC) $(lib_cflags) -c %f -o %o |> build/%B.o {libj}
-#: {libj} |> ^ LINK %f^ $(CC) %f src/libj/macosx/asm-macasm64.o -o %o $(lib_lflags) |> $(libj)
 : {libj} |> ^ LINK %f^ $(CC) %f -o %o $(lib_lflags) |> $(libj)
 
 # profile
