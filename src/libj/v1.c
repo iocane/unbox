@@ -44,9 +44,9 @@ static B eqv(I af,I wf,I m,I n,I k,C*av,C*wv,B*x,B b0,B b1){B b,*xx=x;I c,d,mn=m
  else if(1==k)            EQV(C)
  else{
   c=af?k:0; d=wf?k:0;
-  if(1==n)      DO(m,       *x++=memcmp(av,wv,k)?b0:b1; av+=c;   wv+=d;)
-  else if(af<wf)DO(m, DO(n, *x++=memcmp(av,wv,k)?b0:b1; wv+=k;); av+=k;)
-  else          DO(m, DO(n, *x++=memcmp(av,wv,k)?b0:b1; av+=k;); wv+=k;);
+  if(1==n)      DO(m,       *x++=!!memcmp(av,wv,k)?b0:b1; av+=c;   wv+=d;)
+  else if(af<wf)DO(m, DO(n, *x++=!!memcmp(av,wv,k)?b0:b1; wv+=k;); av+=k;)
+  else          DO(m, DO(n, *x++=!!memcmp(av,wv,k)?b0:b1; av+=k;); wv+=k;);
  }
  R mn?xx[mn-1]:b1;
 }    /* what memcmp should have been */

@@ -58,7 +58,7 @@ r;s
 NB. =========================================================
 j=. cutopen (0 : 0) rplc '~',TAB
 #define offset(r,f) (((char*)&((r*)0)->f)-((char*)((r*)0)))
-void main(){
+int main(void){
 ~printf ("NB. do not edit -- created by sym2ijs\n\n");
 ~printf ("cocurrent <'jdefs'\n\n");
 )
@@ -106,7 +106,7 @@ NB. empties:
 ndx=. bx 0 = # &> bal
 bal=. (<TAB,'puts("");') ndx } bal
 
-ftr=. <TAB,'exit (0);',LF,'}'
+ftr=. <TAB,'return 0;',LF,'}'
 res=. tolist QQ=: hdr,SYMTXT,bal,ftr
 res fwrites x,y,'.c'
 )

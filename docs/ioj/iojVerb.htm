@@ -38,8 +38,8 @@ codify these properties:<br><br>
 implementing verbs (and adverbs and conjunctions); 
 the majority of functions in the implementation are so specified.<tt> </tt>
 (<tt><a href="iojNoun.htm#jt">jt</a> </tt>is the global variables 
-parameter;<tt> a </tt>and<tt> w </tt>denote <font face="Symbol">a</font>
-and <font face="Symbol">w</font>, traditionally the names given to 
+parameter;<tt> a </tt>and<tt> w </tt>denote <font face="Symbol">&#945;</font>
+and <font face="Symbol">&#969;</font>, traditionally the names given to 
 the left and right arguments of APL functions.)
 Verbs are represented by arrays of type<tt> VERB</tt>;<tt> </tt>
 the details of this representation are discussed in
@@ -198,10 +198,10 @@ the atoms (scalars) of<tt> x </tt>times the items of<tt> y</tt>:<br><br>
 3                        3
    0 cs x                   _1 cs y
                          2
-   0 cells x                _1 cells y<font face="ISIJ">
-ÚÄÂÄÂÄ¿                  ÚÄÄÄÂÄÄÄÂÄÄÄ¿
-³1³2³3³                  ³0 1³2 3³4 5³
-ÀÄÁÄÁÄÙ                  ÀÄÄÄÁÄÄÄÁÄÄÄÙ</font>
+   0 cells x                _1 cells y<font face="courier">
+&#x250C;&#x2500;&#x252C;&#x2500;&#x252C;&#x2500;&#x2510;                  &#x250C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;1&#x2502;2&#x2502;3&#x2502;                  &#x2502;0 1&#x2502;2 3&#x2502;4 5&#x2502;
+&#x2514;&#x2500;&#x2534;&#x2500;&#x2534;&#x2500;&#x2518;                  &#x2514;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2518;</font>
 </pre>
 
 <b>Agreement.</b>  In the dyad<tt> v"r</tt>,<tt> </tt>commonly the left and 
@@ -241,14 +241,14 @@ In the continuing example, rag and lag have no effect because
 the left and right frames match.<br><br>
 
 <pre>
-   [xc=.0 cells x           [yc=._1 cells y<font face="ISIJ">
-ÚÄÂÄÂÄ¿                  ÚÄÄÄÂÄÄÄÂÄÄÄ¿
-³1³2³3³                  ³0 1³2 3³4 5³
-ÀÄÁÄÁÄÙ                  ÀÄÄÄÁÄÄÄÁÄÄÄÙ</font>
-   [xa=.xc lag yc           [ya=.xc rag yc<font face="ISIJ">
-ÚÄÂÄÂÄ¿                  ÚÄÄÄÂÄÄÄÂÄÄÄ¿
-³1³2³3³                  ³0 1³2 3³4 5³
-ÀÄÁÄÁÄÙ                  ÀÄÄÄÁÄÄÄÁÄÄÄÙ</font>
+   [xc=.0 cells x           [yc=._1 cells y<font face="courier">
+&#x250C;&#x2500;&#x252C;&#x2500;&#x252C;&#x2500;&#x2510;                  &#x250C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;1&#x2502;2&#x2502;3&#x2502;                  &#x2502;0 1&#x2502;2 3&#x2502;4 5&#x2502;
+&#x2514;&#x2500;&#x2534;&#x2500;&#x2534;&#x2500;&#x2518;                  &#x2514;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2518;</font>
+   [xa=.xc lag yc           [ya=.xc rag yc<font face="courier">
+&#x250C;&#x2500;&#x252C;&#x2500;&#x252C;&#x2500;&#x2510;                  &#x250C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;1&#x2502;2&#x2502;3&#x2502;                  &#x2502;0 1&#x2502;2 3&#x2502;4 5&#x2502;
+&#x2514;&#x2500;&#x2534;&#x2500;&#x2534;&#x2500;&#x2518;                  &#x2514;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2518;</font>
 </pre>
 
 <b>Assembly.</b> After agreement, the phrase<tt> v&.> </tt>applies<tt> v </tt>
@@ -286,10 +286,10 @@ is reshaped from the right to exactly 3 numbers
 and assigned to<tt> m</tt>,<tt> l</tt>,<tt> </tt>and<tt> r</tt>.<br><br>
 
 <pre>
-   [ za=. xa *&.> ya<font face=ISIJ>
-ÚÄÄÄÂÄÄÄÂÄÄÄÄÄ¿
-³0 1³4 6³12 15³
-ÀÄÄÄÁÄÄÄÁÄÄÄÄÄÙ</font>
+   [ za=. xa *&.> ya<font face="courier">
+&#x250C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;0 1&#x2502;4 6&#x2502;12 15&#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</font>
    asm za
  0  1
  4  6

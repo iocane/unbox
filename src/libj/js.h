@@ -3,7 +3,39 @@
 /*                                                                         */
 /* SYS_ and friends                                                        */
 
-#ifndef SYS                                 /* only include once (dtoa.c)  */
+// configuration - conditional compilation
+// historical confusion that will slowly be sorted out
+// complexity of autoconf et. al. seems overkill for J - we shall see
+
+// C_? new style config - default value if not defined by builder
+
+#ifndef C_64 // 64/32 bits
+#define C_64 1
+#endif
+
+#ifndef C_LE // littleendian/bigendian
+#define C_LE 1
+#endif
+
+#ifndef C_NA // noasm/asm
+#define C_NA 0
+#endif
+
+/*
+C_CD_?
+cd ABI config for traditional J platorms done with SYS_? and SY_?
+cd ABI config for new J platforms (raspberry pi, android, etc) done with C_CD_?
+define one of the following in the build as required
+
+-DC_CD_NODF
+ f result and f/d args gets 5 x error (rather than wrong result or crash when abi support not available)
+
+-DC_CD_ARMHF
+ arm hardware float - result/args passed in float hardware - used by raspian
+
+-DC_CD_ARMEL
+ arm software float - result/args passed without using float hardware
+*/
 
 /* Inclusion of a system herein does not necessarily mean that the source  */
 /* compiles or works under that system.                                    */
@@ -32,15 +64,11 @@
 #define SYS_SUNSOL2         2097152L        /* GCC                         */
 #define SYS_MACOSX          4194304L        /* GCC (CC)                    */
 
-#define SY_64               0    /* 64-bit systems                         */
-
 #define SY_WIN32            0    /* any windows intel version              */
 #define SY_WINCE            0    /* any windows ce versions                */
 #define SY_LINUX            0    /* any linux intel version                */
 #define SY_MAC              0    /* any macosx intel or powerpc version    */
 #define SY_MACPPC           0    /* macosx powerpc                         */
-
-#define SY_GETTOD           0    /* gettimeofday on unix                   */
 
 #define SYS_DOS             (SYS_PC + SYS_PC386 + SYS_PCWIN)
 
@@ -48,16 +76,6 @@
                              SYS_MIPS + SYS_NEXT + SYS_SGI + SYS_SUN3 + \
                              SYS_SUN4 + SYS_VAX + SYS_LINUX + SYS_MACOSX + \
                              SYS_FREEBSD + SYS_NETBSD + SYS_SUNSOL2 + SYS_HPUX)
-
-#define SYS_ANSILIB         (SYS_AMIGA + SYS_ARCHIMEDES + SYS_DOS + \
-                             SYS_MACINTOSH +  SYS_OS2 + SYS_UNIX)
-
-#define SYS_SESM            (SYS_ARCHIMEDES + SYS_DOS + SYS_MACINTOSH + \
-                             SYS_OS2 + SYS_UNIX)
-
-#define SYS_LILENDIAN       (SYS_ARCHIMEDES + SYS_DEC5500 + SYS_DOS + \
-                             SYS_OS2 + SYS_LINUX + SYS_FREEBSD + \
-                             SYS_NETBSD)
 
 #if defined(__FreeBSD__)
 #define SYS SYS_FREEBSD
@@ -111,8 +129,6 @@
 #define SYS SYS_MACOSX // intel
 #undef SY_MAC
 #define SY_MAC 1
-#undef SYS_LILENDIAN
-#define SYS_LILENDIAN SYS_MACOSX
 
 #endif
 #endif
@@ -125,19 +141,14 @@
 #define SY_WIN32            1
 #endif
 
-#if SYS & SYS_UNIX
-#undef  SY_GETTOD
-#define SY_GETTOD 1
-#endif
-
 #ifdef UNDER_CE
 #undef  SY_WINCE
 #define SY_WINCE            1
 #endif
 
-#define SY_ALIGN            1
-/* SY_ALIGN    should be 1 for compilers requiring strict alignment        */
-/*             e.g. if (I*)av is not allowed for arbitrary av of type C*   */
+// SY_ALIGN 1 for compilers requiring strict alignment
+//             e.g. if (I*)av is not allowed for arbitrary av of type C*
+#define SY_ALIGN 1 // always use 1 so all use same code
 
 /* Windows CE target autoconfiguration: */
 #if SY_WINCE
@@ -158,19 +169,10 @@
 #endif
 #endif
 
-/* _WIN64 defined by VC++ and _UNIX64 defined in makefile */
-#if defined(_WIN64) || defined(_UNIX64)
-#undef SY_64
-#define SY_64               1
-#endif
-
 #ifndef SYS     /* must be defined */
  error: "SYS must be defined"
 #endif
 
-#if 1!=SY_WIN32+SY_LINUX+SY_MAC
- error: "one and only one of SY_WIN32, SY_LINUX, SY_MAC must be 1"
-#endif 
-
-#endif /* only include once */
+// map C_?? config to old stuff until it is no longer necessary
+#define SY_64 C_64         // eventually replace SY_64 with C_64
 

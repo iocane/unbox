@@ -619,20 +619,19 @@ DF2(jtrollk){A g;V*sv;
  R rollksub(a,vi(w));
 }    /* ?@$ or ?@# or [:?$ or [:?# */
 
-
-static X jtxrand(J jt,X x){A q,z;I c,d,i,n,*qv,*xv,*zv;
- n=AN(x); xv=AV(x); i=n-1;
- GA(z,INT,n,1,0); zv=AV(z);
- while(0<=i){
-  c=xv[i];
-  if(i==n-1){RZ(q=roll(repeat(v2(n-1,1L),v2(XBASE,1<n?1+c:c)))); qv=AV(q);}
-  zv[i]=d=qv[i];
-  if     (d< c){ICPY(zv,qv,i); i=-1;}
-  else if(d==c)--i;
-  else if(d> c)i=n-1;
+static X jtxrand(J jt,X x){PROLOG;A q,z;B b=1;I c,j,m,n,*qv,*xv,*zv;
+ n=AN(x); xv=AV(x);
+ c=xv[n-1]; DO(n-1, if(xv[i]){++c; break;});
+ m=n-(1==c);
+ GA(q,INT,m,1,0); qv=AV(q);
+ DO(m, qv[i]=XBASE;); if(1<c)qv[m-1]=c;
+ while(b){
+  RZ(z=roll(q)); zv=AV(z);
+  if(1==c)break;
+  DO(j=m, --j; if(xv[j]>zv[j]){b=0; break;});
  }
- i=n-1; while(0<=i&&!zv[i])--i; AN(z)=*AS(z)=0>i?1:1+i;
- R z;
+ j=m-1; while(0<=j&&!zv[j])--j; AN(z)=*AS(z)=0>j?1:1+j;
+ EPILOG(z);
 }    /* ?x where x is a single strictly positive extended integer */
 
 static F1(jtrollxnum){A z;B c=0;I d,n;X*u,*v,x;

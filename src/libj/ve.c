@@ -104,7 +104,7 @@ D jtdgcd(J jt,D a,D b){D a1,b1,t;
  R a;
 }    /* D.L. Forkes 1984; E.E. McDonnell 1992 */
 #if SY_64
-#if SY_WIN32
+#if SY_WIN32 && !C_NA
 static I jtilcm(J jt,I a,I b){C er=0;I b1,d,z;
  if(a&&b){RZ(d=igcd(a,b)); b1=b/d; TYMESVV(1L,&z,&a,&b1); if(er)jt->jerr=EWOV; R    z;}else R 0;
 }

@@ -95,7 +95,7 @@ static A jtvlocnl(J jt,B b,A w){A*wv,y;C*s;I i,m,n,wd;
 }    /* validate namelist of locale names */
 
 static I jtprobenum(J jt,C*u){I j; 
- RE(j=i0(indexof(jt->stnum,sc((I)strtol(u,NULL,(I)10))))); 
+ RE(j=i0(indexof(jt->stnum,sc((I)strtoI(u,NULL,(I)10))))); 
  R j<AN(jt->stnum)?j:-1;
 }    /* probe for numbered locales */
 
@@ -192,8 +192,7 @@ F2(jtloccre2){
 }    /* 18!:3  create locale with specified hash table size */
 
 
-F1(jtlocswitch){A g;
- RZ(w);
+F1(jtlocswitch){A g; 
  ASSERT(!AR(w),EVRANK); 
  RZ(g=locale(1,w)); 
  jt->global=g; jt->stswitched=1;

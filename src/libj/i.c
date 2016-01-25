@@ -28,7 +28,7 @@ static A jtmakename(J jt,C*s){A z;I m;NM*zv;
 }
 
 B jtglobinit(J jt){A x,y;C*s;D*d;I j;UC c,k;
- liln=1&&SYS&SYS_LILENDIAN;
+ liln=1&&C_LE;
  jt->adbreak=&breakdata; /* required for ma to work */
  meminit();  /* required for ma to work */
  jt->parsercalls=0;
@@ -71,7 +71,7 @@ B jtglobinit(J jt){A x,y;C*s;D*d;I j;UC c,k;
  RZ(ynam=makename("y")); RZ(ydot=makename("y."));
  zeroQ.n =xzero; zeroQ.d =xone;
  zeroDX.e=0;     zeroDX.x=xzero;
- memset(minus0,C0,8L); minus0[SYS&SYS_LILENDIAN?7:0]='\200';
+ memset(minus0,C0,8L); minus0[C_LE?7:0]='\200';
  pf=qpf();
  pinit();
  R 1;

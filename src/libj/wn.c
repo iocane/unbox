@@ -84,7 +84,7 @@ static X jtx10(J jt,I e){A z;I c,m,r,*zv;
 static NUMH(jtnume){C*t,*td,*te;I e,ne,nf,ni;Q f,i,*v,x,y;
  v=(Q*)vv;
  nf=0; i.d=iv1; f.d=iv1;
- if(te=memchr(s,'e',n)){ne=n-(te-s)-1; e=strtol(1+te,&t,10);  RZ(!*t&&10>ne);}
+ if(te=memchr(s,'e',n)){ne=n-(te-s)-1; e=strtoI(1+te,&t,10);  RZ(!*t&&10>ne);}
  if(td=memchr(s,'.',n)){nf=te?(te-td)-1:n-(td-s)-1; if(nf)RZ(numx(nf,td+1,&f.n));}
  ni=td?td-s:te?te-s:n; RZ(numx(ni,s,&i.n));
  x=i;

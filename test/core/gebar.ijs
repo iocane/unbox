@@ -72,7 +72,28 @@ y=: x (i+/i.#x)}y=: ?9111$1000
 (5$1) -: ''    E. i.5
 (5$1) -: ''    E. 'abcde'
 
+NB. Bug report from Henry Rich
+G =:0 1 2 2 3 4 4 5 5 6 7 7 8 9 10 10 11 11 11 12 12 12
+G =: G ,. 1 2 3 4 5 6 5 7 8 7 9 10 10 11 12 11 13 14 15 16 15 14
+G =: <"1 G
+joinroutes =: 4 : 0&.>
+l =. >: (y i. {: x)
+f =. 0:^:((#y)&=) (y i. {. x)
+z =. (f {. y) , x , (l }. y)
+y E. z
+y
+)
+jtree =: ([: ~.@; joinroutes)/
+12 14 -: jtree G
 
-4!:55 ;:'g ebar i j m n s t x y'
+NB. Bug report from Marshall Lochbaum
+0 0 0 1 0 -: _2 1  E.  1 2 _1 _2 1 
 
+NB. Lots of small range values
+model=:(4 : '($x) x&-: ;. 3 y') 
+_2 1  (model -: E.)  1 2 _1 _2 1 
+x=.5-?1000$10
+y=.((?50$989) <@([+i.@])"0 (5#>:i.10)) {&.> <x
+y (model&.> -: E.&.>) <x
 
+4!:55 ;:'g ebar i j m n s t x y G joinroutes jtree model'

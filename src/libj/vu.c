@@ -15,7 +15,7 @@ A jttoc1(J jt,B h,A w){A z;C*wv,*zv;I n;
  n=AN(w); wv=CAV(w);
  ASSERT(!n||C2T&AT(w),EVDOMAIN);
  GA(z,LIT,n,AR(w),AS(w)); zv=CAV(z);
-#if SYS & SYS_LILENDIAN
+#if C_LE
  if(h)DO(n, *zv++=*wv++; wv++;) else DO(n, *zv++=*wv++; ASSERT(!*wv++,EVDOMAIN);)
 #else
  if(h)DO(n, wv++; *zv++=*wv++;) else DO(n, ASSERT(!*wv++,EVDOMAIN); *zv++=*wv++;)
@@ -29,7 +29,7 @@ static F1(jttoc2){A z;C*wv,*zv;I n;
  n=AN(w); wv=CAV(w);
  ASSERT(!n||LIT&AT(w),EVDOMAIN);
  GA(z,C2T,n,AR(w),AS(w)); zv=CAV(z);
-#if SYS & SYS_LILENDIAN
+#if C_LE
  DO(n, *zv++=*wv++; *zv++=0;);
 #else
  DO(n, *zv++=0; *zv++=*wv++;);

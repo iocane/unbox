@@ -104,7 +104,7 @@ F1(jtranking){A y,z;C*wv;I i,k,m,n,p=0,q=0,t,wcr,wf,wk,wr,*ws,wt,*yu,*yv,*zv;
   switch(k){
    case sizeof(int): RANKINGLOOP(int); break;
    case sizeof(C):   RANKINGLOOP(UC); break;
-#if SYS & SYS_LILENDIAN
+#if C_LE
    case sizeof(S):
     if(wt&IS1BYTE){I c,d,s,t,*u;US*v;
      v=(US*)wv; DO(n, ++yu[*v++];);

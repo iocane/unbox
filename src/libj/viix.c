@@ -119,7 +119,7 @@ F2(jticap2){A*av,*wv,z;B b;C*uu,*vv;I ad,ar,*as,at,c,ck,cm,ge,gt,j,k,m,n,p,q,r,t
   case TT(B01, INT ): BSLOOP(C, I ); break;
   case TT(B01, FL  ): BSLOOP(C, D ); break;
   case TT(LIT, C2T ): BSLOOP(UC,US); break;
-#if SYS & SYS_LILENDIAN
+#if C_LE
   case TT(LIT, LIT ): BSLOOP(UC,UC); break;
 #else
   case TT(LIT, LIT ): if(1&c){BSLOOP(UC,UC); break;}else c>>=1; /* fall thru */

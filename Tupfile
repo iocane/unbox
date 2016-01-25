@@ -1,14 +1,10 @@
 vrelease = j804
+vlink = t@iocane.net
 ifeq (@(X86_64),y)
  varch = j64
 else
  varch = j32
 endif
-vplatform = unknown
-vdesc = release
-vbuild = unbox-v0
-vlink = t@iocane.net
-vdate = 2016-01-15 19:34:00
 
 src_lib = src/libj/*.c
 src_con = src/jconsole/*.c

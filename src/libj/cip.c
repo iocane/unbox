@@ -6,7 +6,6 @@
 #include "j.h"
 #include "vasm.h"
 
-
 static A jtipprep(J jt,A a,A w,I zt,I*pm,I*pn,I*pp){A z=mark;I*as,ar,ar1,m,mn,n,p,*ws,wr,wr1;
  ar=AR(a); as=AS(a); ar1=ar?ar-1:0; RE(*pm=m=prod(ar1,  as));
  wr=AR(w); ws=AS(w); wr1=wr?wr-1:0; RE(*pn=n=prod(wr1,1+ws)); RE(mn=mult(m,n));
@@ -58,7 +57,7 @@ static F2(jtpdtby){A z;B b,*u,*v,*wv;C er=0;I at,m,n,p,t,wt,zk;
      DO(nn, if(*u++){vi=(UI*)v; d=ti; DO(nw, *d+++=*vi++;);} v+=n;);  \
      x=zv; c=tc; DO(n, *x+++=*c++;);
 
-#if defined(NOASM) && SY_64
+#if C_NA
 /*
 *** from asm64noovf.c
 C asminnerprodx(I m,I*z,I u,I*y)
@@ -124,12 +123,12 @@ F2(jtpdt){PROLOG;A z;I ar,at,i,m,n,p,p1,t,wr,wt;
 #if SY_64
    {C er=0;I c,*u,*v,*wv,*x,*zv;
     u=AV(a); v=wv=AV(w); zv=AV(z);
-	/*
+ /*
    for(i=0;i<m;++i,v=wv,zv+=n){
      x=zv; c=*u++; er=asmtymes1v(n,x,c,v);    if(er)break; v+=n;
      DO(p1, x=zv; c=*u++; er=asminnerprodx(n,x,c,v); if(er)break; v+=n;);
 
-	*/
+ */
     for(i=0;i<m;++i,v=wv,zv+=n){
      x=zv; c=*u++; TYMES1V(n,x,c,v); if(er)break; v+=n;
      DO(p1, x=zv; c=*u++; er=asminnerprodx(n,x,c,v); if(er)break; v+=n;);

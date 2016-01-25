@@ -122,7 +122,7 @@ void breakclose(J jt)
 #if SY_WINCE
  DeleteFile(tounibuf(jt->breakfn));
 #else
- DeleteFile(jt->breakfn);
+ DeleteFileA(jt->breakfn);
 #endif
  *jt->breakfn=0;
 }
@@ -136,8 +136,6 @@ F1(jtjoff){I x;
  exit((int)x);
  R 0;
 }
-
-#if (SYS & SYS_SESM)
 
 I jdo(J jt, C* lp){I e,old;A x;
  jt->jerr=0; jt->etxn=0; /* clear old errors */
@@ -198,9 +196,8 @@ C* getlocale(J jt){A y=locname(mtv); y=*AAV(y); R CAV(y);}
 static char breaknone=0;
 
 B jtsesminit(J jt){jt->adbreak=&breakdata; R 1;}
-#endif
 
-int _stdcall JDo(J jt, char* lp){int r;
+int _stdcall JDo(J jt, C* lp){int r;
  r=(int)jdo(jt,lp);
  while(jt->nfe)
   r=(int)jdo(jt,nfeinput(jt,"input_jfe_'   '"));

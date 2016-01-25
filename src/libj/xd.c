@@ -25,28 +25,28 @@ char* tounibuf(char* s){ return s;}
 #else
 wchar_t* tounibuf(char* src)
 {
-	static wchar_t buf[2048+1];
+ static wchar_t buf[2048+1];
 
-	wchar_t* p=buf;
-	if(2048>strlen(src))
-	{
-		while(*src)	*p++=*src++;
-	}
-	*p=0;
-	return buf;
+ wchar_t* p=buf;
+ if(2048>strlen(src))
+ {
+  while(*src) *p++=*src++;
+ }
+ *p=0;
+ return buf;
 }
 
 char *toascbuf(wchar_t *src)
 {
-	static char buf[2048+1];
+ static char buf[2048+1];
 
-	char* p=buf;
-	if(2048>wcslen(src))
-	{
-		while(*src)	*p++=(char)*src++;
-	}
-	*p=0;
-	return buf;
+ char* p=buf;
+ if(2048>wcslen(src))
+ {
+  while(*src) *p++=(char)*src++;
+ }
+ *p=0;
+ return buf;
 }
 #define _A_NORMAL   FILE_ATTRIBUTE_NORMAL
 #define _A_RDONLY   FILE_ATTRIBUTE_READONLY
@@ -291,17 +291,6 @@ static C*modebuf(mode_t m){C c;static C b[11];I t=m;
  R b;
 }
 
-/* 
- linux32 stat fails on big files - so it uses stat64
- but can't get it to work with struct stat64
- so struct stat is used (wrong, but seems to work)
-
-#if SYS & SYS_LINUX
-#define stat stat64
-#endif
-*/
-
- 
 static int ismatch(J jt,C*pat,C*name){ 
  strcpy(jt->dirbase,name); if(stat(jt->dirnamebuf,&jt->dirstatbuf))R 0;
  if('.'!=*pat && ((!strcmp(name,"."))||(!strcmp(name,".."))))R 0;

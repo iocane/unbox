@@ -24,7 +24,7 @@ I nptab=sizeof(ptab)/SZI;
 /* ThinkC MAC 6888x        0 1 _ _ 2 3 4 5 6 7 8 9   */
 /* normal                  0 1 2 3 4 5 6 7 ...       */
 
-#if SYS & SYS_LILENDIAN
+#if C_LE
 #define MSW 1   /* most  significant word */
 #define LSW 0   /* least significant word */
 #else
@@ -56,7 +56,7 @@ static UI hicnz(    I k,UC*v){UI z=0;UC c;        DO(k, c=*v++; if(c&&c!=255)z=(
 
 static UI hicx(J jt,I k,UC*v){UI z=0;I*u=jt->hiv; DO(jt->hin, z=(i+1000003)*v[*u++]^z<<1;      ); R z;}
 
-#if SYS & SYS_LILENDIAN
+#if C_LE
        UI hic2(     I k,UC*v){UI z=0;             DO(k/2,     z=(i+1000003)**v     ^z<<1; v+=2;); R z;}
 #else
        UI hic2(     I k,UC*v){UI z=0; ++v;        DO(k/2,     z=(i+1000003)**v     ^z<<1; v+=2;); R z;}

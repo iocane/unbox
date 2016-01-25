@@ -135,8 +135,8 @@ static void qqset(A a,AF*f1,AF*f2,I*flag){A f,g;C c,d,e,p,q;I m=0;V*v;
  if(!(m&VIRS1)&&v->flag&VIRS1&&c!=CQQ)m+=VIRS1;
  if(!(m&VIRS2)&&v->flag&VIRS2&&c!=CQQ)m+=VIRS2;
  if(!m){
-  p=0; if(f=v->f)p=VERB&AT(f)&&strchr(ir2,d=ID(f));
-  q=0; if(g=v->g)q=VERB&AT(g)&&strchr(ir2,e=ID(g));
+  p=0; if(f=v->f){d=ID(f);p=VERB&AT(f)&&strchr(ir2,d);};
+  q=0; if(g=v->g){e=ID(g);q=VERB&AT(g)&&strchr(ir2,e);};
   switch(c){
    case CFIT:   if(p&&d!=CEXP)m+=VIRS2; if(d==CNE)m+=VIRS1; break;
    case CTILDE: if(p)m+=VIRS1+VIRS2; break;

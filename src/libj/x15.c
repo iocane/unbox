@@ -33,7 +33,7 @@ NOT in the switchcall parameters. Float/double parms after the 1st 8 are
 pushed on the stack differently than I parameters and are not supported
 by switchcall. More than 8 float/double parameters returns an error.
 
-Linux64/Mac64 DELIMIT error if more than 8 D arg. Don't know how to do this call.
+Linux64/Mac64/... DELIMIT error if more than 8 D arg. Don't know how to do this call.
 Treating D as I after the 8th doesn't work.
 Treating all D as I if there are more than 8 doesn't work.
 
@@ -44,15 +44,22 @@ otherwise the regs may be used and the parameter lost.
 #if _WIN32
 #include <windows.h>
 #include <windowsx.h>
+#ifdef __MINGW32__
+#ifndef _stdcall
+#define _stdcall __stdcall
+#define _cdecl __cdecl
+#endif
+#endif
 #else
 #include <stdlib.h>
 typedef unsigned char       BYTE;
 #define CALLBACK
+#define FIXWINUTF8
 #endif
 
 #include "j.h"
 
-#define SY_UNIX64 (SY_64 && (SY_LINUX || SY_MAC))
+#define SY_UNIX64 (SY_64 && !defined(ANDROID) && (SY_LINUX || SY_MAC || SY_FREEBSD))
 
 #if SY_WINCE
 #define HINSTANCE_ERROR 0
@@ -77,8 +84,10 @@ char *toascbuf(wchar_t *src);
 #undef atop
 #endif
 
+#ifndef ANDROID
 #undef MAX     /* defined in sys/param.h */
 #undef MIN     /* defined in sys/param.h */
+#endif
 #include <sys/param.h>
 
 typedef void *HMODULE;
@@ -87,7 +96,6 @@ typedef I (*FARPROC)();
 #define __stdcall              
 #define _cdecl                            
 #endif
-
 
 /* windows has 2 dll calling conventions - __stdcall and _cdecl */
 /* __stdcall is used by most DLLs, including all system APIs    */
@@ -99,7 +107,13 @@ typedef I     (_cdecl    *ALTCALLI)();
 typedef D     (__stdcall *STDCALLD)();
 typedef D     (_cdecl    *ALTCALLD)();
 
-#if SY_64  /* J64 requires special float result */
+#ifdef C_CD_ARMHF
+typedef float              DoF;
+#else
+typedef double             DoF;
+#endif
+
+#if SY_64 || defined(__arm__)  /* J64 requires special float result */
 typedef float (__stdcall *STDCALLF)();
 typedef float (_cdecl    *ALTCALLF)();
 #endif 
@@ -112,7 +126,7 @@ typedef float (_cdecl    *ALTCALLF)();
 #define DECOUNT         4       /* too many args or (#args)~:#parms     */
 #define DEDEC           5
 #define DEPARM          6
-#define DELIMIT			7		/* linux64 max 8 float/double scalars   */
+#define DELIMIT         7       /* too many float/double args  */
 
 #define NCDARGS         32      /* hardwired max number of arguments    */
 #define NLIBS           100     /* max number of libraries              */
@@ -143,11 +157,15 @@ typedef struct {
 } CCT;
 
 #if SY_64 && SY_WIN32
-void double_trick(D,D,D,D);
+extern void double_trick(D,D,D,D);
 #endif
 
 #if SYS & (SYS & SYS_LINUX)
-void double_trick(D,D,D,D,D,D,D,D);
+#ifdef C_CD_ARMHF
+extern void double_trick(float,float,float,float,float,float,float,float,float,float,float,float,float,float,float,float);
+#else
+extern void double_trick(D,D,D,D,D,D,D,D);
+#endif
 #endif
 #if SY_MACPPC
 static void double_trick(double*v, I n){I i=0;
@@ -196,6 +214,13 @@ static void double_trick(double*v, I n){I i=0;
  #if SY_WIN32
   #define dtrick ;
  #elif SY_LINUX
+ #ifdef C_CD_ARMHF
+  #undef dtrick
+  #define dtrick double_trick(dd[0],dd[1],dd[2],dd[3],dd[4],dd[5],dd[6],dd[7],dd[8],dd[9],dd[10],dd[11],dd[12],dd[13],dd[14],dd[15]);
+ #else
+  #define dtrick ;
+ #endif
+ #elif SY_FREEBSD
   #define dtrick ;
  #elif SY_MACPPC
   #define dtrick double_trick(dd,dcnt);
@@ -291,29 +316,29 @@ static void double_trick(double*v, I n){I i=0;
                   d[24],d[25],d[26],d[27],d[28],d[29],d[30],d[31]);break;  \
 }
 
-static I     stdcalli(STDCALLI fp,I*d,I cnt,D*dd,I dcnt){I r;
+static I     stdcalli(STDCALLI fp,I*d,I cnt,DoF*dd,I dcnt){I r;
  SWITCHCALL;
  R r;
 }  /* I result */
-static I     altcalli(ALTCALLI fp,I*d,I cnt,D*dd,I dcnt){I r;
+static I     altcalli(ALTCALLI fp,I*d,I cnt,DoF*dd,I dcnt){I r;
  SWITCHCALL;
  R r;
 }
-static D     stdcalld(STDCALLD fp,I*d,I cnt,D*dd,I dcnt){D r;
+static D     stdcalld(STDCALLD fp,I*d,I cnt,DoF*dd,I dcnt){D r;
  SWITCHCALL;
  R r;
 }  /* D result */
-static D     altcalld(ALTCALLD fp,I*d,I cnt,D*dd,I dcnt){D r;
+static D     altcalld(ALTCALLD fp,I*d,I cnt,DoF*dd,I dcnt){D r;
  SWITCHCALL;
  R r;
 }
 
-#if SY_64
-static float stdcallf(STDCALLF fp,I*d,I cnt,D*dd,I dcnt){float r;
+#if SY_64 || defined(__arm__)
+static float stdcallf(STDCALLF fp,I*d,I cnt,DoF*dd,I dcnt){float r;
 SWITCHCALL;
 R r;
 }  /* J64 float result */
-static float altcallf(ALTCALLF fp,I*d,I cnt,D*dd,I dcnt){float r;
+static float altcallf(ALTCALLF fp,I*d,I cnt,DoF*dd,I dcnt){float r;
   SWITCHCALL;
  R r;
 }
@@ -326,7 +351,7 @@ static float altcallf(ALTCALLF fp,I*d,I cnt,D*dd,I dcnt){float r;
 /* v         - result data area                            */
 /* alternate - whether to use alternate calling convention */
 
-static void docall(FARPROC fp, I*d, I cnt, D* dd, I dcnt, C zl, I*v, B alternate){
+static void docall(FARPROC fp, I*d, I cnt, DoF* dd, I dcnt, C zl, I*v, B alternate){
  if(strchr("cwsilx*n",zl)){I r;
   r= alternate ? altcalli((ALTCALLI)fp,d,cnt,dd,dcnt) : stdcalli((STDCALLI)fp,d,cnt,dd,dcnt);
   switch(zl){
@@ -340,7 +365,7 @@ static void docall(FARPROC fp, I*d, I cnt, D* dd, I dcnt, C zl, I*v, B alternate
    case 'n': *v=0;         break;
   }}
  else
-#if !SY_64
+#if !SY_64 && !defined(__arm__)
  {D r;
   r= alternate ? altcalld((ALTCALLD)fp,d,cnt,dd,dcnt) : stdcalld((STDCALLD)fp,d,cnt,dd,dcnt);
   *(D*)v=r;
@@ -439,7 +464,7 @@ static CCT*jtcdload(J jt,CCT*cc,C*lib,C*proc){B ha=0;FARPROC f;HMODULE h;
  if(cc->cc){C buf[SY_64?21:12];I k,n;
   n=strlen(proc);
   CDASSERT(n&&n<sizeof(buf),DEBADFN);
-  k='_'==*proc?-strtol(1+proc,0L,10):strtol(proc,0L,10);
+  k='_'==*proc?-strtoI(1+proc,0L,10):strtoI(proc,0L,10);
   CDASSERT(k&&'0'==*lib||0<=k&&'1'==*lib,DEBADFN);
   sprintf(buf,FMTI,k); if(0>k)*buf='_';
   CDASSERT(!strcmp(proc,buf),DEBADFN);
@@ -453,7 +478,13 @@ static CCT*jtcdload(J jt,CCT*cc,C*lib,C*proc){B ha=0;FARPROC f;HMODULE h;
 #if SY_WINCE
   h=LoadLibrary(tounibuf(lib));
 #else
-  h=LoadLibrary(lib);
+#ifdef FIXWINUTF8
+  wchar_t wlib[1024];
+  MultiByteToWideChar(CP_UTF8,0,lib,1+(int)strlen(lib),wlib,1024);
+  h=LoadLibraryW(wlib);
+#else
+  h=LoadLibraryA(lib);
+#endif
 #endif
   CDASSERT((UI)h>HINSTANCE_ERROR,DEBADLIB);
 #endif
@@ -541,6 +572,9 @@ static CCT*jtcdparse(J jt,A a){C c,lib[NPATH],*p,proc[NPATH],*s,*s0;CCT*cc,cct;I
  CDASSERT(SY_64||'l'!=c,DEDEC);
  if(c=='*' && *s && strchr("cwsilxfdj",*s)) ++s;
  CDASSERT(!*s||*s==' ',DEDEC);
+#ifdef C_CD_NODF // platform does not support f result
+ CDASSERT(cc->zl!='f',DEDEC)  
+#endif
  /* argument type declarations */
  i=-1;
  while(c=*s++){
@@ -554,10 +588,24 @@ static CCT*jtcdparse(J jt,A a){C c,lib[NPATH],*p,proc[NPATH],*s,*s0;CCT*cc,cct;I
   CDASSERT(strchr("cwsilxfdj",c),der);
   CDASSERT(c!='j'||cc->star[i],der);
   if('l'==c){CDASSERT(SY_64,der); cc->tletter[i]='x';}
+#ifdef C_CD_NODF // platform does not support f or d args
+ CDASSERT(cc->star[i]==1 || (cc->tletter[i]!='f' && cc->tletter[i]!='d'),der);
+#endif  
  }
  CDASSERT(0<=i||'1'!=cc->cc,DEDEC+256);
  MC(lib, s0+li,cc->ln); lib [cc->ln]=0;
  MC(proc,s0+pi,cc->pn); proc[cc->pn]=0;
+ 
+#if SY_MAC && !SY_64
+// mac osx 32 lseek off_t (64 bit) is not called properly
+// map libc.dylib seek to be libj.dylib x15lseek32
+if(!strcmp(lib,"libc.dylib")&&!strcmp(proc,"lseek"))
+{
+strcpy(lib,"libj.dylib");
+strcpy(proc,"x15lseek32");
+}
+#endif
+ 
  RZ(cc=cdload(cc,lib,proc));
  cc->n=1+i; RZ(cc=cdinsert(a,cc)); cc->li=li+cc->ai; cc->pi=pi+cc->ai;
  R cc;
@@ -593,9 +641,9 @@ static I*jtconvert0(J jt,I zt,I*v,I wt,C*u){D p,q;I k=0;S s;
 
 static B jtcdexec1(J jt,CCT*cc,C*zv0,C*wu,I wk,I wt,I wd){A*wv=(A*)wu,x,y,*zv;B zbx,lit,star;
     C c,cipt[NCDARGS],*u;FARPROC fp;float f;I cipcount=0,cipn[NCDARGS],*cipv[NCDARGS],cv0[2],
-    data[NCDARGS*2],dcnt=0,*dv,i,n,per,t,xn,xr,xt,*xv; D dd[NCDARGS];
- n=cc->n; 
- CDASSERT(!n||wt&BOX||!(u=memchr(cc->star,C1,n)),DEPARM+256*(u-cc->star));
+    data[NCDARGS*2],dcnt=0,fcnt=0,*dv,i,n,per,t,xn,xr,xt,*xv; DoF dd[NCDARGS];
+ n=cc->n;
+ CDASSERT(!n||wt&BOX||!(u=memchr(cc->star,C1,n)),DEPARM+256*(((B*)u)-cc->star));
  zbx=cc->zbx; zv=1+(A*)zv0; dv=data; u=wu; xr=0;
  for(i=0;i<n;++i){
   per=DEPARM+i*256; star=cc->star[i]; c=cc->tletter[i]; t=cdjtype(c);
@@ -631,12 +679,18 @@ static B jtcdexec1(J jt,CCT*cc,C*zv0,C*wu,I wk,I wt,I wd){A*wv=(A*)wu,x,y,*zv;B 
    case 'x': *dv++=*xv;      break;
    case 'f':
 #if SY_MACPPC
-	         dd[dcnt++]=(float)*(D*)xv;
+          dd[dcnt++]=(float)*(D*)xv;
 #endif
 #if SY_64 && (SY_LINUX  || SY_MAC)
-			  {f=(float)*(D*)xv; dd[dcnt]=0; *(float*)(dd+dcnt++)=f;}
+     {f=(float)*(D*)xv; dd[dcnt]=0; *(float*)(dd+dcnt++)=f;}
+#else
+#ifdef C_CD_ARMHF
+             f=(float)*(D*)xv; dd[fcnt]=0; *(float*)(dd+fcnt++)=f;
+             if ((0==fcnt%2) && (fcnt<dcnt)) fcnt=dcnt;
+             if ((1==fcnt%2) && (fcnt>dcnt)) dcnt=fcnt+1;
 #else
              f=(float)*(D*)xv; *dv++=*(int*)&f;
+#endif
 #endif
              break;
    case 'd':
@@ -644,16 +698,27 @@ static B jtcdexec1(J jt,CCT*cc,C*zv0,C*wu,I wk,I wt,I wd){A*wv=(A*)wu,x,y,*zv;B 
              dd[dcnt++]=*(D*)xv;
 #endif
 #if SY_UNIX64
-              dd[dcnt++]=*(D*)xv;
+             dd[dcnt++]=*(D*)xv;
 #endif
 #if !SY_UNIX64
+#ifdef C_CD_ARMHF
+             if (dcnt==fcnt) fcnt+=2;
+             *(D*)(dd+dcnt++)= *(D*)xv; dcnt++;
+#else
+#ifdef C_CD_ARMEL
+             if((data-dv)%2) *dv++=0;   /* 8-byte alignment for double */
+#endif
              *dv++=xv[0];
 #if !SY_64
              *dv++=xv[1];
 #endif
 #endif
+#endif
  }}
-#if SY_UNIX64
+#ifdef C_CD_ARMHF
+ CDASSERT(16>=fcnt,DELIMIT);
+ CDASSERT(16>=dcnt,DELIMIT);
+#elif SY_UNIX64
  CDASSERT(8>=dcnt,DELIMIT);
 #endif
 
@@ -726,7 +791,7 @@ F1(jtcderx){I t;C buf[1024];
  ASSERTMTV(w); t=jt->getlasterror; jt->getlasterror=0;
 
 #if SY_WIN32 && !SY_WINCE
- FormatMessage( 
+ FormatMessageA(
     FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
     NULL, (DWORD)t,
     MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),  /* Default language */
@@ -826,6 +891,10 @@ I static cbnew(){A r;
  if(B01==AT(r)) R *(BYTE*)AV(r);
  R 0;
 }
+
+#if SY_MAC && !SY_64
+int x15lseek32(int fh,int off, int type){R (int)lseek(fh,(off_t)off,type);}// mac osx 32
+#endif
 
 /* start of code generated by J script x15_callback.ijs */
 #define CBTYPESMAX 10 /* result and 9 args */

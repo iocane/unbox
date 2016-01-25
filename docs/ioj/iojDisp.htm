@@ -105,7 +105,7 @@ such that:<br>
 &nbsp;&#149; The rank of<tt> d </tt>is the greater of 2 or the rank of<tt> b</tt>.<br>
 &nbsp;&#149; Excluding the last two axes, the shape of<tt> d </tt>matches 
 the shape of<tt> b</tt>.<br>
-&nbsp;&#149; The frame (formed by<font size=2 face="ISIJ"> Ú Â ¿Ã Å ´À Á Ù ³ Ä</font>)
+&nbsp;&#149; The frame (formed by<font face="courier"> &#x250C; &#x252C; &#x2510;&#x251C; &#x253C; &#x2524;&#x2514; &#x2534; &#x2518; &#x2502; &#x2500;</font>)
 is the same in all the planes.<br><br>
 
 Boxed display can be modelled as follows:<br>
@@ -148,10 +148,10 @@ unless indicated otherwise). The first group are utilities:<br><br>
 <tt>boxed &nbsp; &nbsp; </tt>1 if boxed<br>
 <tt>mt &nbsp; &nbsp;&nbsp; &nbsp; </tt>1 if empty<br>
 <tt>boxc &nbsp; &nbsp; &nbsp;</tt>(noun) box drawing characters<br>
-<tt>tcorn &nbsp; &nbsp; </tt>(noun) the characters<font size=2 face="ISIJ"> ¿ Ú</font><br>
-<tt>tint &nbsp; &nbsp; &nbsp;</tt>(noun) the characters<font size=2 face="ISIJ"> Â Ä</font><br>
-<tt>bcorn &nbsp; &nbsp; </tt>(noun) the characters<font size=2 face="ISIJ"> Ù À</font><br>
-<tt>bint &nbsp; &nbsp; &nbsp;</tt>(noun) the characters<font size=2 face="ISIJ"> Á Ä</font><br>
+<tt>tcorn &nbsp; &nbsp; </tt>(noun) the characters<font face="courier"> &#x2510; &#x250C;</font><br>
+<tt>tint &nbsp; &nbsp; &nbsp;</tt>(noun) the characters<font face="courier"> &#x252C; &#x2500;</font><br>
+<tt>bcorn &nbsp; &nbsp; </tt>(noun) the characters<font face="courier"> &#x2518; &#x2514;</font><br>
+<tt>bint &nbsp; &nbsp; &nbsp;</tt>(noun) the characters<font face="courier"> &#x2534; &#x2500;</font><br>
 <br>
 
 <tt>mat </tt>is the main verb of the next group of definitions.
@@ -161,13 +161,13 @@ the array &#151; a literal table that "looks like" the argument array.<br><br>
 <tt>perim </tt>draws a perimeter around each plane of the right argument:
 According to the information in the left argument (a result 
 of<tt> rc</tt>),<tt> perim </tt>puts
-<font size=2 face="ISIJ"> ¿ Ú Â Ä </font>(<tt>top</tt>),
-<font size=2 face="ISIJ"> Ù À Á Ä </font>(<tt>bot</tt>),
-<font size=2 face="ISIJ"> Ã ³ </font>(<tt>left</tt>), or
-<font size=2 face="ISIJ"> ´ ³ </font>(<tt>right</tt>) at
+<font face="courier"> &#x2510; &#x250C; &#x252C; &#x2500; </font>(<tt>top</tt>),
+<font face="courier"> &#x2518; &#x2514; &#x2534; &#x2500; </font>(<tt>bot</tt>),
+<font face="courier"> &#x251C; &#x2502; </font>(<tt>left</tt>), or
+<font face="courier"> &#x2524; &#x2502; </font>(<tt>right</tt>) at
 appropriate positions on the perimeter of each plane.<br><br>
 
-<tt>topleft </tt>catenates the characters<font size=2 face="ISIJ"> Å ³ Ä </font>
+<tt>topleft </tt>catenates the characters<font face="courier"> &#x253C; &#x2502; &#x2500; </font>
 on the top and left edges of a literal table.<tt> inside </tt>produces
 the inside (excluding perimeter) of a plane of the display.<tt> take </tt>
 is<tt> {. </tt>if the right argument is non-empty, and is an array
@@ -179,16 +179,16 @@ number of rows and columns in the display of atoms in a plane.<br><br>
 a boxed array.<br><br>
 
 The following examples illustrate the inner workings of the model:<br>
-<pre>
+<pre><font face="courier">
    y=: 2 3$(i.2 3);'abc';(i.4 1);(<2 2$'ussr');12;<+&.>i.2 2 3
    x=: mat@thorn1&.>y
 
-   $&.> x              rc x              { rc x<font size=2 face="ISIJ">
-ÚÄÄÄÂÄÄÄÂÄÄÄÄ¿      ÚÄÄÄÄÂÄÄÄÄÄ¿      ÚÄÄÄÄÂÄÄÄÄÂÄÄÄÄ¿
-³2 5³1 3³4 1 ³      ³4 11³5 3 9³      ³4 5 ³4 3 ³4 9 ³
-ÃÄÄÄÅÄÄÄÅÄÄÄÄ´      ÀÄÄÄÄÁÄÄÄÄÄÙ      ÃÄÄÄÄÅÄÄÄÄÅÄÄÄÄ´
-³4 4³1 2³11 9³                        ³11 5³11 3³11 9³
-ÀÄÄÄÁÄÄÄÁÄÄÄÄÙ                        ÀÄÄÄÄÁÄÄÄÄÁÄÄÄÄÙ</font>
+   $&.> x              rc x              { rc x
+&#x250C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;      &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;      &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;2 5&#x2502;1 3&#x2502;4 1 &#x2502;      &#x2502;4 11&#x2502;5 3 9&#x2502;      &#x2502;4 5 &#x2502;4 3 &#x2502;4 9 &#x2502;
+&#x251C;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;      &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;      &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;
+&#x2502;4 4&#x2502;1 2&#x2502;11 9&#x2502;                        &#x2502;11 5&#x2502;11 3&#x2502;11 9&#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;                        &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
 
    a =: 2 3 4 $ 'abcdefghijklmnopqrstuvwx'
 
@@ -202,58 +202,58 @@ qrst                qrst
 uvwx                uvwx
 
    
-   topleft 3 4$'a'<font size=2 face="ISIJ">
-ÅÄÄÄÄ
-³aaaa
-³aaaa
-³aaaa</font>
-   (2 3;4 5) perim 6 10$'a'<font size=2 face="ISIJ">
-ÚÄÄÄÄÂÄÄÄÄÄ¿
-³aaaaaaaaaa³
-³aaaaaaaaaa³
-Ãaaaaaaaaaa´
-³aaaaaaaaaa³
-³aaaaaaaaaa³
-³aaaaaaaaaa³
-ÀÄÄÄÄÁÄÄÄÄÄÙ</font>
+   topleft 3 4$'a'
+&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;
+&#x2502;aaaa
+&#x2502;aaaa
+&#x2502;aaaa
+   (2 3;4 5) perim 6 10$'a'
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;aaaaaaaaaa&#x2502;
+&#x2502;aaaaaaaaaa&#x2502;
+&#x251C;aaaaaaaaaa&#x2524;
+&#x2502;aaaaaaaaaa&#x2502;
+&#x2502;aaaaaaaaaa&#x2502;
+&#x2502;aaaaaaaaaa&#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
    
-   ] t=: ({rc x) inside@:(take&.>)"2 x<font size=2 face="ISIJ">
-0 1 2³abc³0        
-3 4 5³   ³1        
-     ³   ³2        
-     ³   ³3        
-ÄÄÄÄÄÅÄÄÄÅÄÄÄÄÄÄÄÄÄ
-ÚÄÄ¿ ³12 ³ÚÄÂÄÄÂÄÄ¿
-³us³ ³   ³³0³1 ³2 ³
-³sr³ ³   ³ÃÄÅÄÄÅÄÄ´
-ÀÄÄÙ ³   ³³3³4 ³5 ³
-     ³   ³ÀÄÁÄÄÁÄÄÙ
-     ³   ³         
-     ³   ³ÚÄÂÄÄÂÄÄ¿
-     ³   ³³6³7 ³8 ³
-     ³   ³ÃÄÅÄÄÅÄÄ´
-     ³   ³³9³10³11³
-     ³   ³ÀÄÁÄÄÁÄÄÙ</font>
-   (rc x) perim t<font size=2 face="ISIJ">
-ÚÄÄÄÄÄÂÄÄÄÂÄÄÄÄÄÄÄÄÄ¿
-³0 1 2³abc³0        ³
-³3 4 5³   ³1        ³
-³     ³   ³2        ³
-³     ³   ³3        ³
-ÃÄÄÄÄÄÅÄÄÄÅÄÄÄÄÄÄÄÄÄ´
-³ÚÄÄ¿ ³12 ³ÚÄÂÄÄÂÄÄ¿³
-³³us³ ³   ³³0³1 ³2 ³³
-³³sr³ ³   ³ÃÄÅÄÄÅÄÄ´³
-³ÀÄÄÙ ³   ³³3³4 ³5 ³³
-³     ³   ³ÀÄÁÄÄÁÄÄÙ³
-³     ³   ³         ³
-³     ³   ³ÚÄÂÄÄÂÄÄ¿³
-³     ³   ³³6³7 ³8 ³³
-³     ³   ³ÃÄÅÄÄÅÄÄ´³
-³     ³   ³³9³10³11³³
-³     ³   ³ÀÄÁÄÄÁÄÄÙ³
-ÀÄÄÄÄÄÁÄÄÄÁÄÄÄÄÄÄÄÄÄÙ</font>
-</pre>
+   ] t=: ({rc x) inside@:(take&.>)"2 x
+0 1 2&#x2502;abc&#x2502;0        
+3 4 5&#x2502;   &#x2502;1        
+     &#x2502;   &#x2502;2        
+     &#x2502;   &#x2502;3        
+&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+&#x250C;&#x2500;&#x2500;&#x2510; &#x2502;12 &#x2502;&#x250C;&#x2500;&#x252C;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2510;
+&#x2502;us&#x2502; &#x2502;   &#x2502;&#x2502;0&#x2502;1 &#x2502;2 &#x2502;
+&#x2502;sr&#x2502; &#x2502;   &#x2502;&#x251C;&#x2500;&#x253C;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2524;
+&#x2514;&#x2500;&#x2500;&#x2518; &#x2502;   &#x2502;&#x2502;3&#x2502;4 &#x2502;5 &#x2502;
+     &#x2502;   &#x2502;&#x2514;&#x2500;&#x2534;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2518;
+     &#x2502;   &#x2502;         
+     &#x2502;   &#x2502;&#x250C;&#x2500;&#x252C;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2510;
+     &#x2502;   &#x2502;&#x2502;6&#x2502;7 &#x2502;8 &#x2502;
+     &#x2502;   &#x2502;&#x251C;&#x2500;&#x253C;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2524;
+     &#x2502;   &#x2502;&#x2502;9&#x2502;10&#x2502;11&#x2502;
+     &#x2502;   &#x2502;&#x2514;&#x2500;&#x2534;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2518;
+   (rc x) perim t
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;0 1 2&#x2502;abc&#x2502;0        &#x2502;
+&#x2502;3 4 5&#x2502;   &#x2502;1        &#x2502;
+&#x2502;     &#x2502;   &#x2502;2        &#x2502;
+&#x2502;     &#x2502;   &#x2502;3        &#x2502;
+&#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;
+&#x2502;&#x250C;&#x2500;&#x2500;&#x2510; &#x2502;12 &#x2502;&#x250C;&#x2500;&#x252C;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2510;&#x2502;
+&#x2502;&#x2502;us&#x2502; &#x2502;   &#x2502;&#x2502;0&#x2502;1 &#x2502;2 &#x2502;&#x2502;
+&#x2502;&#x2502;sr&#x2502; &#x2502;   &#x2502;&#x251C;&#x2500;&#x253C;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2524;&#x2502;
+&#x2502;&#x2514;&#x2500;&#x2500;&#x2518; &#x2502;   &#x2502;&#x2502;3&#x2502;4 &#x2502;5 &#x2502;&#x2502;
+&#x2502;     &#x2502;   &#x2502;&#x2514;&#x2500;&#x2534;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2518;&#x2502;
+&#x2502;     &#x2502;   &#x2502;         &#x2502;
+&#x2502;     &#x2502;   &#x2502;&#x250C;&#x2500;&#x252C;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2510;&#x2502;
+&#x2502;     &#x2502;   &#x2502;&#x2502;6&#x2502;7 &#x2502;8 &#x2502;&#x2502;
+&#x2502;     &#x2502;   &#x2502;&#x251C;&#x2500;&#x253C;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2524;&#x2502;
+&#x2502;     &#x2502;   &#x2502;&#x2502;9&#x2502;10&#x2502;11&#x2502;&#x2502;
+&#x2502;     &#x2502;   &#x2502;&#x2514;&#x2500;&#x2534;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2518;&#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+</font></pre>
 <br>
 
 <a name="Formatted"></a><p><font size="5"><b>Formatted Display</b></font><br><br>
