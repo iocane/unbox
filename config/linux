@@ -17,12 +17,14 @@ else
 endif
 
 ifeq (@(X86_64),y)
- lib_cflags += -D_UNIX64
+ lib_cflags += -DC_64=1
+ con_cflags += -DC_64=1
 else
- lib_cflags += -m32
- lib_lflags += -m32
- con_cflags += -m32
- con_lflags += -m32
+ lib_cflags += -m32 -mpc64 -DC_64=0
+ lib_lflags += -m32 -mpc64
+ con_cflags += -m32 -mpc64 -DC_64=0
+ con_lflags += -m32 -mpc64
+ tsdll_cflags += -m32 -mpc64
 endif
 
 ifeq (@(READLINE),y)
@@ -59,9 +61,9 @@ defdir = src/libj/defs
 
 # defs
 : foreach $(defdir)/*.sym | $(libj) $(jcon) {prof} |> ^ SYM2IJS %f^ $(jcon) -sym2ijs $(defdir)/ %B |> $(defdir)/%B.c
-: foreach $(defdir)/*.c |> ^ CC %f^ $(CC) %f -o %o |> bin/%B {defs}
+: foreach $(defdir)/*.c |> ^ CC %f^ $(CC) -Isrc/libj/defs %f -o %o |> bin/%B {defs}
 : foreach {defs} |> ^ DEFS %f^ %f > %o |> bin/%B.ijs
 
 # test dll
-: test/dll/tsdll.c |> ^ CC %f^ $(CC) %f -shared -fPIC -o %o |> bin/%B.$(so)
+: test/dll/tsdll.c |> ^ CC %f^ $(CC) $(tsdll_cflags) %f -shared -fPIC -o %o |> bin/%B.$(so)
 

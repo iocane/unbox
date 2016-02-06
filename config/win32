@@ -1,10 +1,10 @@
 vplatform = windows
 so = dll
 src_lib += src\libj\win\*.c src\libj\win\*.cpp
-lib_cflags = /c /D_JDLL /DC_NA=0 /DWIN64
+lib_cflags = /c /D_JDLL /DC_NA=0 /DC_64=1
 lib_lflags = OleAut32.lib AdvApi32.lib Ole32.lib src\libj\win\winasm64.obj src\libj\win\jdll.def
 lib_extra = bin\j.lib bin\j.exp
-con_cflags = /c /DWIN64
+con_cflags = /c /DC_64=1
 con_lflags = /STACK:8096000
 con_extra = 
 

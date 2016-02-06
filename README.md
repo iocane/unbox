@@ -22,10 +22,14 @@ Building
 
 ### Linux
 
+_The build scripts assume you are using a 64 bit compiler even if targeting a 32 bit architecture. Using a 32 bit version of gcc, e.g., will require some changes to the build scripts._
+
 1. Make sure tup is in your PATH
 2. Type `tup` in the working directory
 
 ### Windows (Visual Studio 2013 Community)
+
+_The build scripts only target 64 bit Windows builds at the moment._
 
 1. Make sure tup is in your PATH
 2. From the Visual Studio Tools folder run the command prompt appropriate for your build
