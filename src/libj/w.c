@@ -36,12 +36,13 @@ static ST state[10][9]={
 };
 /*         CX      CS      CA      CN      CB      C9      CD      CC      CQ   */
 
-F1(jtwordil){A z;C e,nv,s,t=0;I b,i,m,n,*x,xb,xe;ST p;UC*v;
+F1(jtwordil){A z;C e,nv,s,t=0,u;I b,i,m,n,*x,xb,xe;ST p;UC*v;
  RZ(w);
  nv=0; s=SS;
  n=AN(w); v=UAV(w); GA(z,INT,1+n+n,1,0); x=1+AV(z);
  for(i=0;i<n;++i){
-  p=state[s][wtype[v[i]]]; e=p.effect;
+  if(u=v[i]&128){while(v[i+1]&128){i++;}}
+  p=state[s][u?CA:wtype[v[i]]]; e=p.effect;
   if(e==EI){
    t&=s==S9;
    if(t){if(!nv){nv=1; xb=b;} xe=i;}
@@ -105,7 +106,7 @@ F2(jtenqueue){A*v,*x,y,z;B b;C d,e,p,*s,*wi;I i,n,*u,wl;UC c;
  s=CAV(w); u=AV(a); n=*u++; n=0>n?-(1+n):n;
  GA(z,BOX,n,1,0); x=v=AAV(z);
  for(i=0;i<n;i++){
-  wi=s+*u++; wl=*u++; c=e=*wi; p=ctype[c]; b=0;
+  wi=s+*u++; wl=*u++; c=e=*wi; p=c&128?CA:ctype[c]; b=0;
   if(1<wl){d=*(wi+wl-1); if(b=p!=C9&&d==CESC1||d==CESC2)e=spellin(wl,wi);}
   if(128>c&&(y=ds(e)))*x++=y;
   else if(e==CFCONS)RZ(*x++=FCONS(connum(wl-1,wi)))

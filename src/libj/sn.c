@@ -6,13 +6,15 @@
 #include "j.h"
 
 
-B jtvnm(J jt,I n,C*s){B b=0;C c,d,t;I j,k;
+B jtvnm(J jt,I n,C*s){B b=0;C c,d,t,u;I j,k;
  RZ(n);
  c=*s; d=*(s+n-1);
  if(jt->dotnames&&2==n&&'.'==d&&('m'==c||'n'==c||'u'==c||'v'==c||'x'==c||'y'==c))R 1;
- RZ(CA==ctype[c]);
+ RZ(CA==ctype[c]||128&c);
  c='a'; 
- DO(n, d=c; c=s[i]; t=ctype[c]; RZ(t==CA||t==C9); if(c=='_'&&d=='_'&&!b&&i!=n-1){j=1+i; b=1;});
+ DO(n, d=c; c=s[i]; if(u=c&128){while(++i<n&&s[i]&128); i--;}
+  t=ctype[c]; RZ(t==CA||t==C9||u);
+  if(c=='_'&&d=='_'&&!b&&i!=n-1){j=1+i; b=1;});
  if(c=='_'){DO(j=n-1, if('_'==s[--j])break;); k=n-j-2; R!b&&j&&(!k||vlocnm(k,s+j+1));}
  if(!b)R 1;
  k=2; DO(n-j, c=s[j+i]; if(2>k)k+='_'==c; else{RZ(CA==ctype[c]); k=0;});
