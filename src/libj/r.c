@@ -58,13 +58,13 @@ F1(jtaro){A fs,gs,hs,s,*u,*x,y,z;B ex,xop;C id;I*hv,m;V*v;
 F1(jtarep){R box(aro(w));}
 
 
-static F1(jtfxchar){A y;C c,d,id,*s;I m,n;
+static F1(jtfxchar){A y;C c,id,*s;UC d;I m,n;
  n=AN(w);
  ASSERT(1>=AR(w),EVRANK);
  ASSERT(n,EVLENGTH);
  s=CAV(w); c=*(s+n-1);
- DO(n, d=s[i]; ASSERT(32<=d&&d<127,EVSPELL););
- if(CA==ctype[*s]&&c!=CESC1&&c!=CESC2)R swap(w);
+ DO(n, d=s[i]; ASSERT(32<=d&&(m=vutf8(s+i)),EVSPELL); i+=m-1;);
+ if((CA==ctype[*s]||128&*s)&&c!=CESC1&&c!=CESC2)R swap(w);
  ASSERT(id=spellin(n,s),EVSPELL);
  if(id!=CFCONS)y=ds(id); else{m=s[n-2]-'0'; y=FCONS(CSIGN!=*s?sc(m):2==n?ainf:sc(-m));}
  ASSERT(y&&RHS&AT(y),EVDOMAIN);
