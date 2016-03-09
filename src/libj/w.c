@@ -36,13 +36,13 @@ static ST state[10][9]={
 };
 /*         CX      CS      CA      CN      CB      C9      CD      CC      CQ   */
 
-F1(jtwordil){A z;C e,nv,s,t=0,u;I b,i,m,n,*x,xb,xe;ST p;UC*v;
+F1(jtwordil){A z;C e,nv,s,t=0,u;I b,i,k,m,n,*x,xb,xe;ST p;UC*v;
  RZ(w);
  nv=0; s=SS;
  n=AN(w); v=UAV(w); GA(z,INT,1+n+n,1,0); x=1+AV(z);
  for(i=0;i<n;++i){
-  if(u=v[i]&128){while(v[i+1]&128){i++;}}
-  p=state[s][u?CA:wtype[v[i]]]; e=p.effect;
+  k=vutf8(v+i); if(k==0){jsignal3(EVSPELL,w,i); R 0;}
+  p=state[s][k>1?CA:wtype[v[i]]]; e=p.effect;
   if(e==EI){
    t&=s==S9;
    if(t){if(!nv){nv=1; xb=b;} xe=i;}
@@ -50,6 +50,7 @@ F1(jtwordil){A z;C e,nv,s,t=0,u;I b,i,m,n,*x,xb,xe;ST p;UC*v;
   }
   s=p.new;
   if(e){b=i; t=s==S9;}
+  i+=k-1;
  }
  if(s==SQ){jsignal3(EVOPENQ,w,b); R 0;}
  t&=s==S9;

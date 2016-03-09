@@ -740,6 +740,7 @@ extern A        jtvec(J,I,I,void*);
 extern F        jtvfn(J,F);
 extern A        jtvger2(J,C,A,A);
 extern B        jtvnm(J,I,C*);
+extern I        jtvutf8(J,C*);
 extern void     jtwri(J,I,C*,I,C*);
 extern A        jtxcvt(J,I,A);
 extern B        jtxlinit(J);
