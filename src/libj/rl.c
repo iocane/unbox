@@ -121,6 +121,7 @@ static F1(jtlbox){A p,*v,*vv,*wv,x,y;B b=0;I n,wd;
   RZ(x=raze(w)); s=UAV(x);
   DO(AN(x), c[*s++]=0;);
   if(c[CQUOTE]&&equ(w,words(x)))R over(cstr(";:"),lchar(x));
+  if(jt->jerr==EVSPELL)RESETERR;
   if(c[d=' ']||c[d='|']||c[d='/']||c[d=',']||c[d=';']){
    GA(y,LIT,n+AN(x),1,0); t=CAV(y);
    DO(n, x=WVR(i); *t++=d; MC(t,AV(x),AN(x)); t+=AN(x););
