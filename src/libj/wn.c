@@ -165,7 +165,7 @@ static void jtnumcase(J jt,I n,C*s,B*b,B*j,B*x,B*q,B*ii){B e;C c;
 #endif
   if(memchr(s,'x',n)){*b=*x=1; *ii=0;}
   if(memchr(s,'r',n)){*q=1;    *ii=0;}
-  if(!*x&&!*q&!*ii)R;
+  if(!*x&&!*q&&!*ii)R;
   DO(n, c=s[i]; e=!s[1+i]; if(c=='.'||c=='e'||c=='x'&&!e){*x=*q=*ii=0; R;});
 }}
 
