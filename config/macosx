@@ -1,5 +1,4 @@
 vplatform = macosx
-
 so = so
 lib_cflags = -DNOASM -fPIC
 lib_lflags = -shared -lm
@@ -11,21 +10,21 @@ ifeq (@(CLANG),y)
  CC += -Wno-parentheses -Wno-unused-value -Wno-pointer-sign
  CC += -Wno-empty-body -Wno-return-type -Wno-constant-logical-operand
  CC += -Wno-comment -Wno-string-plus-int -Wno-unsequenced
- lib_cflags += -O1
- con_cflags += -O1
+ optlevel = -O1
 else
  CC = gcc
- lib_cflags += -O2
- con_cflags += -O2
+ optlevel = -O1
 endif
 
 ifeq (@(X86_64),y)
- lib_cflags += -D_UNIX64
+ lib_cflags += -DC_64=1
+ con_cflags += -DC_64=1
 else
- lib_cflags += -m32
- lib_lflags += -m32
- con_cflags += -m32
- con_lflags += -m32
+ lib_cflags += -m32 -mpc64 -DC_64=0
+ lib_lflags += -m32 -mpc64
+ con_cflags += -m32 -mpc64 -DC_64=0
+ con_lflags += -m32 -mpc64
+ tsdll_cflags += -m32 -mpc64
 endif
 
 ifeq (@(READLINE),y)
@@ -34,8 +33,8 @@ ifeq (@(READLINE),y)
 endif
 
 ifeq (@(RELEASE),n)
- lib_cflags += -g3 -ggdb3 -gdwarf-4 -DDEBUG
- con_cflags += -g3 -ggdb3 -gdwarf-4
+ lib_cflags += -O0 -g3 -ggdb3 -gdwarf-4 -DDEBUG
+ con_cflags += -O0 -g3 -ggdb3 -gdwarf-4
 else
  lib_cflags += -fomit-frame-pointer
  con_cflags += -fomit-frame-pointer
@@ -47,8 +46,7 @@ jcon = bin/jconsole
 defdir = src/libj/defs
 
 # version
-jversion = $(vrelease)/$(varch)/$(vplatform)/$(vdesc)/$(vbuild)/$(vlink)/$(vdate)
-: |> echo '#define JVERSION "$(jversion)"' > %o |> $(jver)
+: |> config/jversion.sh $(vrelease) $(varch) $(vlink) $(vplatform) > $(jver) |> $(jver)
 
 # libj
 : foreach $(src_lib) | $(jver) |> ^ CC %f^ $(CC) $(lib_cflags) -c %f -o %o |> build/%B.o {libj}

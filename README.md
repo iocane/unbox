@@ -22,10 +22,14 @@ Building
 
 ### Linux
 
+_The build scripts assume you are using a 64 bit compiler even if targeting a 32 bit architecture. Using a 32 bit version of gcc, e.g., will require some changes to the build scripts._
+
 1. Make sure tup is in your PATH
 2. Type `tup` in the working directory
 
 ### Windows (Visual Studio 2013 Community)
+
+_The build scripts only target 64 bit Windows builds at the moment._
 
 1. Make sure tup is in your PATH
 2. From the Visual Studio Tools folder run the command prompt appropriate for your build
@@ -45,5 +49,8 @@ If a test fails run `bin/jconsole -debug test/<path-to-test>` to see where the f
 Contributing
 ------------
 
-If you would like to contribute code changes, you can either send a patch or commit to 
-the `develop` branch in your local repository and submit a pull request.
+The preferred ways to contribute code are:
+1. Send me a patch and I will review it and apply it to the develop branch
+2. Make a new branch off of `develop`, e.g., `myfeature`, and make your changes
+   in that branch. When you are done with your changes create a pull request on
+   Github and I will pull, test/edit and then merge into develop.
