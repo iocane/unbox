@@ -6,13 +6,20 @@
 #include "j.h"
 
 
-B jtvnm(J jt,I n,C*s){B b=0;C c,d,t;I j,k;
+I jtvutf8(J jt,C*s) {C c,u;UC m;I i;
+ i=0; c=s[i]; if(!(c&128)) R 1;
+ m=64; while(c&m){i++; RZ(s[i]|192==128); m>>=1;} R i+(i>0);
+}    /* return the length of the first UTF-8 char of s (0 for error). */
+
+B jtvnm(J jt,I n,C*s){B b=0;C c,d,t,u;I j,k;
  RZ(n);
  c=*s; d=*(s+n-1);
  if(jt->dotnames&&2==n&&'.'==d&&('m'==c||'n'==c||'u'==c||'v'==c||'x'==c||'y'==c))R 1;
- RZ(CA==ctype[c]);
+ RZ(CA==ctype[c]||128&c);
  c='a'; 
- DO(n, d=c; c=s[i]; t=ctype[c]; RZ(t==CA||t==C9); if(c=='_'&&d=='_'&&!b&&i!=n-1){j=1+i; b=1;});
+ DO(n, d=c; RZ((k=vutf8(s+i))!=0); i+=k-1;
+  c=s[i]; t=ctype[c]; RZ(t==CA||t==C9||k>1);
+  if(c=='_'&&d=='_'&&!b&&i!=n-1){j=1+i; b=1;});
  if(c=='_'){DO(j=n-1, if('_'==s[--j])break;); k=n-j-2; R!b&&j&&(!k||vlocnm(k,s+j+1));}
  if(!b)R 1;
  k=2; DO(n-j, c=s[j+i]; if(2>k)k+='_'==c; else{RZ(CA==ctype[c]); k=0;});

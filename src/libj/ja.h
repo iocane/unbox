@@ -1099,6 +1099,7 @@
 #define vs(x)                       jtvs(jt,(x))
 #define vtokens(x)                  jtvtokens(jt,(x))
 #define vtrans(x)                   jtvtrans(jt,(x))
+#define vutf8(x)                    jtvutf8(jt,(x))
 #define wa(x,y,z)                   jtwa(jt,(x),(y),(z))
 #define weight(x,y)                 jtweight(jt,(x),(y)) 
 #define widthdp(x,y,z)              jtwidthdp(jt,(x),(y),(z)) 
