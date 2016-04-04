@@ -32,8 +32,9 @@ _The build scripts assume you are using a 64 bit compiler even if targeting a 32
 _The build scripts only target 64 bit Windows builds at the moment._
 
 1. Make sure tup is in your PATH
-2. From the Visual Studio Tools folder run the command prompt appropriate for your build
-3. Change to the Unbox source directory and type `tup`
+2. Open Visual Studio Tools (from the start menu, not Visual Studio)
+3. From the Visual Studio Tools folder, run the "64 bit native" command prompt
+4. Change to the Unbox source directory and type `tup`
 
 ### Mac
 
