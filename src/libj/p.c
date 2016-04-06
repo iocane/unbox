@@ -95,6 +95,11 @@ ACTION(jtis){A f,n,v;B ger=0;C c,*s;
 #define CAVN  (CONJ+ADV+VERB+NOUN)
 #define EDGE  (MARK+ASGN+LPAR)
 
+/* Table of execution cases
+ * Note that the first four columns are no longer used.
+ * They have been replaced by a custom binary search and are kept for
+ * reference only.
+ */
 PT cases[] = {
  EDGE,      VERB,      NOUN, ANY,       jtmonad,   jtvmonad, 1,2,1,
  EDGE+AVN,  VERB,      VERB, NOUN,      jtmonad,   jtvmonad, 2,3,2,
@@ -125,10 +130,29 @@ F1(jtparsea){A*s,*stack,y,z;AF f;I b,*c,e,i,j,k,m,n,otop=jt->nvrtop,*sp;
  if(1>=n)R mark;
  RZ(y=IX(AN(w))); sp=AV(y);  /* current location in tokens */
  do{                                                                      
-  for(i=0;i<NCASES;i++){                                                 
-   c=cases[i].c; s=n+stack;                                              
-   if(*c++&AT(*s++)&&*c++&AT(*s++)&&*c++&AT(*s++)&&*c++&AT(*s++)) break; 
-  }                                                             
+  s=n+stack;
+#define ST(i) AT(s[i])
+  /* Custom binary tree to determine execution case. */
+  if((ST(1)|ST(2))&~CAVN){ /* cases 7, 8 */
+   i = ST(1)&ASGN
+    ? (ST(0)&(NAME+NOUN) && ST(2)&CAVN ? 7 : NCASES)
+    : (ST(2)&RPAR && ST(0)&LPAR && ST(1)&CAVN ? 8 : NCASES);
+  }else if(ST(0)&~(EDGE+AVN)){
+   i = NCASES;
+  }else if((ST(1)|ST(2))&(ADV+CONJ)){ /* cases 3, 4, 6 */
+   i = ST(1)&(ADV+CONJ)
+    ? (ST(0)&EDGE ? 6 : NCASES)
+    : ST(2)&ADV ? 3 : ST(3)&(VERB+NOUN) ? 4 : ST(0)&EDGE ? 6 : NCASES;
+  }else{ /* cases 0, 1, 2, 5, 6 */
+   if(ST(2)&NOUN){
+    i = ST(0)&~EDGE ? NCASES : ST(1)&NOUN ? 6 : 0;
+   }else{
+    i = ST(3)&NOUN
+     ? (ST(1)&NOUN ? 2 : 1)
+     : ST(3)&VERB ? 5 : ST(0)&EDGE ? 6 : NCASES;
+   }
+  }
+#undef ST
   if(i<NCASES){                                                   
    b=cases[i].b; j=n+b;                                           
    e=cases[i].e; k=n+e;                                            
