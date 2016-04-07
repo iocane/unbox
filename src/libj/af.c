@@ -47,6 +47,7 @@ static F2(jtfixa){A aa,f,g,h,wf,x,y,z=w;V*v;
   case CAMP: case CAMPCO: case CUNDER: case CUNDCO:
    R df2(fixa(aa,f),fixa(one,g),wf);
   case CCOLON:
+   // handles only v : v; n : n had VFIX set & never gets here
    R df2(fixa(one,f),fixa(num[2],g),wf);
   case CADVF:
    R hook(fixa(num[3],f),fixa(num[3],g));
