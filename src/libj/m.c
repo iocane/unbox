@@ -19,7 +19,7 @@
 I mhb=sizeof(MS);                  /* # bytes in memory header             */
 I mhw=sizeof(MS)/SZI;              /* # words in memory header             */
 
-static A jttraverse(J,A,AF);
+static void jttraverse(J,A,AF);
 
 
 B jtmeminit(J jt){I k,m=MLEN;
@@ -187,27 +187,27 @@ static A jtma(J jt,I m){A z;C*u;I j,n,p,*v;MS*x;
 }
 
 
-static A jttraverse(J jt,A w,AF f){
- RZ(w);
- switch(AT(w)){
-  case XD:
-   {DX*v=(DX*)AV(w); DO(AN(w), CALL1(f,v->x,0L); ++v;);} break;
-  case RAT:  
-   {A*v=AAV(w); DO(2*AN(w), CALL1(f,*v++,0L););} break;
-  case XNUM: case BOX:
-   if(!(AFLAG(w)&AFNJA+AFSMM)){A*wv=AAV(w);I wd=(I)w*ARELATIVE(w); DO(AN(w), CALL1(f,WVR(i),0L););} break;
-  case VERB: case ADV:  case CONJ: 
-   {V*v=VAV(w); CALL1(f,v->f,0L); CALL1(f,v->g,0L); CALL1(f,v->h,0L);} break;
-  case SYMB:
-   {I k,*v=1+AV(w);L*u;
-    CALL1(f,LOCPATH(w),0L);
-    CALL1(f,LOCNAME(w),0L);
-    DO(AN(w)-1, if(k=*v++){u=k+jt->sympv; CALL1(f,u->name,0L); CALL1(f,u->val,0L);});
-   } break;
-  case SB01: case SINT: case SFL: case SCMPX: case SLIT: case SBOX:
-   {P*v=PAV(w); CALL1(f,SPA(v,a),0L); CALL1(f,SPA(v,e),0L); CALL1(f,SPA(v,i),0L); CALL1(f,SPA(v,x),0L);} break;
+static void jttraverse(J jt,A w,AF f){
+ if(w && (AT(w) & (XD+RAT+XNUM+BOX+VERB+ADV+CONJ+SYMB+SB01+SINT+SFL+SCMPX+SLIT+SBOX))){
+  switch(AT(w)){
+   case XD:
+    {DX*v=(DX*)AV(w); DO(AN(w), CALL1(f,v->x,0L); ++v;);} break;
+   case RAT:
+    {A*v=AAV(w); DO(2*AN(w), CALL1(f,*v++,0L););} break;
+   case XNUM: case BOX:
+    if(!(AFLAG(w)&AFNJA+AFSMM)){A*wv=AAV(w);I wd=(I)w*ARELATIVE(w); DO(AN(w), CALL1(f,WVR(i),0L););} break;
+   case VERB: case ADV:  case CONJ:
+    {V*v=VAV(w); CALL1(f,v->f,0L); CALL1(f,v->g,0L); CALL1(f,v->h,0L);} break;
+   case SYMB:
+    {I k,*v=1+AV(w);L*u;
+     CALL1(f,LOCPATH(w),0L);
+     CALL1(f,LOCNAME(w),0L);
+     DO(AN(w)-1, if(k=*v++){u=k+jt->sympv; CALL1(f,u->name,0L); CALL1(f,u->val,0L);});
+    } break;
+   case SB01: case SINT: case SFL: case SCMPX: case SLIT: case SBOX:
+    {P*v=PAV(w); CALL1(f,SPA(v,a),0L); CALL1(f,SPA(v,e),0L); CALL1(f,SPA(v,i),0L); CALL1(f,SPA(v,x),0L);} break;
+  }
  }
- R mark;
 }
 
 
