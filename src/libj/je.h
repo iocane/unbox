@@ -632,6 +632,7 @@ extern A        jtga(J,I,I,I,I*);
 extern A        jtgadv(J,A,C);
 extern A        jtgah(J,I,A);
 extern A        jtgc(J,A,I);
+extern A        jtgce(J,A,I);
 extern void     jtgc3(J,A,A,A,I);
 extern A        jtgconj(J,A,A,C);
 extern B        jtglobinit(J);

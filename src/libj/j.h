@@ -227,7 +227,7 @@
 #define DO(n,stm)       {I i=0,_n=(n); for(;i<_n;i++){stm}}
 #define DQ(n,stm)       {I i=(n)-1;    for(;i>=0;--i){stm}}
 #define ds(c)           pst[(UC)(c)]
-#define EPILOG(z)       R gc(z,_ttop)
+#define EPILOG(z)       R gce(z,_ttop)
 #define FDEPDEC(d)      {jt->fdepi-=d;}
 #define FDEPINC(d)      {ASSERT(jt->fdepn>=d+jt->fdepi,EVSTACK); jt->fdepi+=d;}
 #define FCONS(x)        fdef(CFCONS,VERB,jtnum1,jtnum2,0L,0L,(x),0L,RMAX,RMAX,RMAX)

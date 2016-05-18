@@ -382,6 +382,7 @@
 #define gb_next()                   jtgb_next(jt)
 #define gb_unif_rand(x)             jtgb_unif_rand(jt,(x))
 #define gc(x,y)                     jtgc(jt,(x),(y))
+#define gce(x,y)                    jtgce(jt,(x),(y))
 #define gc3(x0,x1,x2,x3)            jtgc3(jt,(x0),(x1),(x2),(x3))
 #define gcd(x,y)                    jtgcd(jt,(x),(y)) 
 #define gconj(x,y,z)                jtgconj(jt,(x),(y),(z))   
