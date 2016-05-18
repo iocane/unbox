@@ -226,8 +226,8 @@ static void jttf(J jt){A t=jt->tstacka;
 
 F1(jttpush){
  RZ(w);
- traverse(w,jttpush);
  if(jt->ttop>=NTSTACK)RZ(tg());
+ AFLAG(w) |= AFREC;
  jt->tstack[jt->ttop]=w;
  ++jt->ttop;
  R w;
@@ -238,19 +238,38 @@ I jttpop(J jt,I old){
  R old;
 }
 
-A jtgc (J jt,A w,I old){ra(w); tpop(old); R tpush(w);}
+F1(jtdr){
+ RZ(w);
+ I m=jt->arg; jt->arg=AC(w)-1; AC(w)-=m;
+ if(AFLAG(w)&AFREC){traverse(w,jtdr); AFLAG(w)-=AFREC;}
+ jt->arg=m;
+ R w;
+}
+void jtderec(J jt,A w){I m=jt->arg; jt->arg=0; jtdr(jt,w); jt->arg=m;}
+F1(jtdpush){tpush(w); jtderec(jt,w); R w;}
+A jtgc (J jt,A w,I old){ra(w); tpop(old); R jtdpush(jt,w);}
 
 void jtgc3(J jt,A x,A y,A z,I old){
  if(x)ra(x);    if(y)ra(y);    if(z)ra(z);
  tpop(old);
- if(x)tpush(x); if(y)tpush(y); if(z)tpush(z);
+ if(x)jtdpush(jt,x); if(y)jtdpush(jt,y); if(z)jtdpush(jt,z);
 }
 
 
-F1(jtfa ){RZ(w); traverse(w,jtfa ); fr(w);   R mark;}
-F1(jtra ){RZ(w); traverse(w,jtra ); ++AC(w); R w;   }
+void jtfr1(J jt,A w){I j,n;MS*x;
+ x=(MS*)w-1;
+ j=x->j; n=msize[j];
+ jt->bytes-=n;
+ if(PLIML<j)FREE(x);  /* malloc-ed       */
+ else{                /* pool allocation */
+  x->a=jt->mfree[j];
+  jt->mfree[j]=(I*)x;
+  jt->mfreeb[j]+=n;
+}}
+F1(jtfa ){RZ(w); if(AFLAG(w)&AFREC){traverse(w,jtfa); fr(w);}else if(--AC(w)==0){traverse(w,jtfa); jtfr1(jt,w);} R mark;}
+F1(jtra ){RZ(w); if(AFLAG(w)&AFREC)traverse(w,jtra); ++AC(w); R w;   }
 
-static F1(jtra1){RZ(w); traverse(w,jtra1); AC(w)+=jt->arg; R w;}
+static F1(jtra1){RZ(w); if(AFLAG(w)&AFREC)traverse(w,jtra1); AC(w)+=jt->arg; R w;}
 A jtraa(J jt,I k,A w){A z;I m=jt->arg; jt->arg=k; z=ra1(w); jt->arg=m; R z;}
 
 F1(jtrat){R ra(tpush(w));}
