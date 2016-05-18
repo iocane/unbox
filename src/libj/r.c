@@ -30,7 +30,7 @@ static F1(jtdrr){PROLOG;A df,dg,fs,gs,hs,*x,z;B b,ex,xop;C c,id;I fl,*hv,m;V*v;
  EPILOG(z);
 }
 
-F1(jtdrep){A z=drr(w); R z&&AT(z)&BOX?z:ravel(box(z));}
+F1(jtdrep){PROLOG;A z=drr(w); z=z&&AT(z)&BOX?z:ravel(box(z)); EPILOG(z);}
 
 
 F1(jtaro){A fs,gs,hs,s,*u,*x,y,z;B ex,xop;C id;I*hv,m;V*v;
@@ -55,7 +55,7 @@ F1(jtaro){A fs,gs,hs,s,*u,*x,y,z;B ex,xop;C id;I*hv,m;V*v;
  R z;
 }
 
-F1(jtarep){R box(aro(w));}
+F1(jtarep){PROLOG; A z=box(aro(w)); EPILOG(z);}
 
 
 static F1(jtfxchar){A y;C c,id,*s;UC d;I m,n;
