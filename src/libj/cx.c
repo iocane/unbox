@@ -126,7 +126,8 @@ static DF2(jtxdefn){PROLOG;A cd,cl,cn,h,*hv,*line,loc=jt->local,t,td,u,v,z;B b,l
    case CASSERT:
     if(!jt->assert){++i; break;}
    case CTBLOCK: 
-    gc(z,old); t=parsex(vec(BOX,ci->n,line+ci->i),lk,ci,d);
+    ra(z); tpop(old); tpush(z); // gc without derec
+    t=parsex(vec(BOX,ci->n,line+ci->i),lk,ci,d);
     if(t||DB1==jt->db||DBERRCAP==jt->db||!jt->jerr)++i;
     else if(EWTHROW==jt->jerr){if(tdi&&(j=(tdv+tdi-1)->t)){i=1+j; RESETERR;}else BASSERT(0,EWTHROW);}
     else{i=ci->go; if(i<SMAX){RESETERR; if(tdi){--tdi; jt->db=od;}}}
