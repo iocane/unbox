@@ -227,7 +227,6 @@ static void jttf(J jt){A t=jt->tstacka;
 F1(jttpush){
  RZ(w);
  if(jt->ttop>=NTSTACK)RZ(tg());
- AFLAG(w) |= AFREC;
  jt->tstack[jt->ttop]=w;
  ++jt->ttop;
  R w;
@@ -287,7 +286,7 @@ A jtga(J jt,I t,I n,I r,I*s){A z;I m,w;
  RZ(z=ma(m));
  if(!(t&DIRECT))memset(z,C0,m);
  if(t&LAST0){I*v=(I*)z+w-2; *v++=0; *v=0;}
- AC(z)=1; AN(z)=n; AR(z)=r; AFLAG(z)=0; AK(z)=AKX(z); AM(z)=msize[((MS*)z-1)->j]-(AK(z)+sizeof(MS)); 
+ AC(z)=1; AN(z)=n; AR(z)=r; AFLAG(z)=AFREC; AK(z)=AKX(z); AM(z)=msize[((MS*)z-1)->j]-(AK(z)+sizeof(MS));
  AT(z)=0; tpush(z); AT(z)=t;
  if(1==r&&!(t&SPARSE))*AS(z)=n; else if(r&&s)ICPY(AS(z),s,r);  /* 1==n always if t&SPARSE */
  R z;
@@ -296,7 +295,7 @@ A jtga(J jt,I t,I n,I r,I*s){A z;I m,w;
 A jtgah(J jt,I r,A w){A z;
  ASSERT(RMAX>=r,EVLIMIT); 
  RZ(z=ma(SZI*(AH+r)));
- AT(z)=0; ++AC(z); tpush(z);
+ AT(z)=0; AFLAG(z)|=AFREC; ++AC(z); tpush(z);
  if(w){
   AFLAG(z)=0; AM(z)=AM(w); AT(z)=AT(w); AN(z)=AN(w); AR(z)=r; AK(z)=CAV(w)-(C*)z;
   if(1==r)*AS(z)=AN(w);
