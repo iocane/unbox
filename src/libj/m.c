@@ -247,10 +247,13 @@ F1(jtdr){
 }
 void jtderec(J jt,A w){I m=jt->arg; jt->arg=0; jtdr(jt,w); jt->arg=m;}
 F1(jtdpush){tpush(w); jtderec(jt,w); R w;}
-A jtgce(J jt,A w,I old){ra(w); tpop(old); R jtdpush(jt,w);}
-A jtgc (J jt,A w,I old){R w;}
+A jtgc (J jt,A w,I old){ra(w); tpop(old); R jtdpush(jt,w);}
 
-void jtgc3(J jt,A x,A y,A z,I old){R;}
+void jtgc3(J jt,A x,A y,A z,I old){
+ if(x)ra(x);    if(y)ra(y);    if(z)ra(z);
+ tpop(old);
+ if(x)jtdpush(jt,x); if(y)jtdpush(jt,y); if(z)jtdpush(jt,z);
+}
 
 
 void jtfr1(J jt,A w){I j,n;MS*x;
