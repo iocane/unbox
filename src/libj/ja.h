@@ -204,6 +204,7 @@
 #define deflate(x0,x1,x2,x3)        jtdeflate(jt,(x0),(x1),(x2),(x3))
 #define deflateq(x0,x1,x2,x3)       jtdeflateq(jt,(x0),(x1),(x2),(x3))
 #define denseit(x)                  jtdenseit(jt,(x))
+#define derec(x)                    jtderec(jt,(x))
 #define det(x,y)                    jtdet(jt,(x),(y))
 #define detd(x)                     jtdetd(jt,(x))
 #define detmr(x)                    jtdetmr(jt,(x))

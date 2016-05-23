@@ -81,31 +81,31 @@ static DF1(jtfpown){A fs,z;AF f1;I n,old;V*sv;
 static DF1(jtply1){PROLOG;DECLFG;A b,hs,j,x,*xv,y,z;B*bv,q;I i,k,m,n,*nv,old,p=0;
  hs=sv->h; m=AN(hs); 
  RZ(x=ravel(hs)); RZ(y=from(j=grade1(x),x)); nv=AV(y);
- GA(x,BOX,m,1,0); xv=AAV(x);
+ // x uses non-recursive reference counts.
+ // To safely add an element to x, call gc on it, then copy it.
+ GA(x,BOX,m,1,0); derec(x); xv=AAV(x);
  while(p<m&&0>nv[p])p++;
  if(p<m){
-  RZ(z=ca(w));
+  old=jt->tbase+jt->ttop; RZ(z=ca(w)); gc(z,old);
   n=nv[m-1]; k=p;
-  while(k<m&&!nv[k]){xv[k]=z; ++k;}
+  while(k<m&&!nv[k]){xv[k]=ra(z); ++k;}
   RZ(b=eq(ainf,from(j,ravel(gs)))); bv=BAV(b); q=k<m?bv[k]:0;
   old=jt->tbase+jt->ttop;
   for(i=1;i<=n;++i){
-   RZ(z=CALL1(f1,y=z,fs));
-   if(q&&equ(y,z)){DO(m-k, xv[k]=z; ++k;); break;}
-   while(k<m&&i==nv[k]){xv[k]=z; ++k; q=k<m?bv[k]:0;}
-   if(!(i%10))gc3(x,z,0L,old);
+   RZ(z=CALL1(f1,y=z,fs)); gc(z,old);
+   if(q&&equ(y,z)){DO(m-k, xv[k]=ra(z); ++k;); break;}
+   while(k<m&&i==nv[k]){xv[k]=ra(z); ++k; q=k<m?bv[k]:0;}
  }}
  if(0<p){
   RZ(fs=inv(fs)); f1=VAV(fs)->f1;
-  RZ(z=ca(w));
+  old=jt->tbase+jt->ttop; RZ(z=ca(w)); gc(z,old);
   n=nv[0]; k=p-1;
   RZ(b=eq(scf(-inf),from(j,ravel(gs)))); bv=BAV(b); q=bv[k];
   old=jt->tbase+jt->ttop;
   for(i=-1;i>=n;--i){
-   RZ(z=CALL1(f1,y=z,fs));
-   if(q&&equ(y,z)){DO(1+k, xv[k]=z; --k;); break;}
-   while(0<=k&&i==nv[k]){xv[k]=z; --k; q=0<=k?bv[k]:0;}
-   if(!(i%10))gc3(x,z,0L,old);
+   RZ(z=CALL1(f1,y=z,fs)); gc(z,old);
+   if(q&&equ(y,z)){DO(1+k, xv[k]=ra(z); --k;); break;}
+   while(0<=k&&i==nv[k]){xv[k]=ra(z); --k; q=0<=k?bv[k]:0;}
  }}
  z=ope(reshape(shape(hs),from(grade1(j),x))); EPILOG(z);
 }

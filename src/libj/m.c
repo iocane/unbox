@@ -245,7 +245,7 @@ F1(jtdr){
  R w;
 }
 void jtderec(J jt,A w){I m=jt->arg; jt->arg=0; jtdr(jt,w); jt->arg=m;}
-F1(jtdpush){tpush(w); jtderec(jt,w); R w;}
+F1(jtdpush){tpush(w); derec(w); R w;}
 A jtgc (J jt,A w,I old){ra(w); tpop(old); R jtdpush(jt,w);}
 
 void jtgc3(J jt,A x,A y,A z,I old){

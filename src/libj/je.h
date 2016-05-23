@@ -605,6 +605,7 @@ extern A        jtdaxis(J,I,A);
 extern DC       jtdeba(J,C,A,A,A);
 extern void     jtdebdisp(J,DC);
 extern void     jtdebz(J);
+extern void     jtderec(J,A);
 extern D        jtdgcd(J,D,D);
 extern A        jtdropr(J,I,A);
 extern B        jtecvt(J,D,I,int*,int*,C*);
