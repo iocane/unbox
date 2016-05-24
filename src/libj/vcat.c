@@ -137,11 +137,11 @@ static F2(jtovg){A s,z;C*x;I ar,*as,c,k,m,n,q,r,*sv,wr,*ws,zn;
  R z;
 }    /* a,w general case for array with the same type; jt->rank=0 */
 
-static F2(jtovv){A z;I m,t;
+static F2(jtovv){PROLOG;A z;I m,t;
  t=AT(a); 
  GA(z,t,AN(a)+AN(w),1,0);  
  if(t&BOX){A1*u,*v;B p,q,r;
-  p=ARELATIVE(a); q=ARELATIVE(w); r=p||q; if(r)AFLAG(z)=AFREL; v=A1AV(z);
+  p=ARELATIVE(a); q=ARELATIVE(w); r=p||q; if(r)AFLAG(z)|=AFREL; v=A1AV(z);
   u=A1AV(a); m=p*(I)a-r*(I)z; DO(AN(a), *v++=m+*u++;);
   u=A1AV(w); m=q*(I)w-r*(I)z; DO(AN(w), *v++=m+*u++;);
  }else{C*x;I k;
@@ -149,7 +149,7 @@ static F2(jtovv){A z;I m,t;
   MC(x,  AV(a),m      ); 
   MC(x+m,AV(w),k*AN(w));
  }
- R z;
+ EPILOG(z);
 }    /* a,w for vectors/scalars with the same type */
 
 static void om(I k,I c,I d,I m,I m1,I n,I r,C*u,C*v){I e,km,km1,kn;
