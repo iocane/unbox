@@ -165,6 +165,7 @@ F2(jtforeign){I p,q;
   case XC(9,48):  R CDERIV(CIBEAM, jtdotnamesq,  0,            RMAX,0,   0   );
   case XC(9,49):  R CDERIV(CIBEAM, jtdotnamess,  0,            RMAX,0,   0   );
   case XC(9,64):  R CDERIV(CIBEAM, jtbitsq,      0,            RMAX,0,   0   );
+  case XC(9,66):  R CDERIV(CIBEAM, jtjtaddr,     0,            RMAX,0,   0   );
 
 /* case XC(11,*):      handled at beginning */
 /* case XC(12,*):      reserved for D.H. Steinbrook tree stuff         */

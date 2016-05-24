@@ -162,6 +162,7 @@ extern F1(jtjregcomp);
 extern F1(jtjregfree);
 extern F1(jtjreghandles);
 extern F1(jtjreginfo);
+extern F1(jtjtaddr);
 extern F1(jtjunlock);
 extern F1(jtjwait);
 extern F1(jtlamin1);

@@ -224,3 +224,6 @@ F1(jtbitsq){
  else R sc(32);
 }
 
+F1(jtjtaddr){
+  R sc((UI)(jt->breakfn));
+}
