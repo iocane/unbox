@@ -232,31 +232,25 @@ F1(jttpush){
  R w;
 }
 
-void jtclr(J jt,A w){AFLAG(w)|=AFCLR; fr(w);}
-
 I jttpop(J jt,I old){
- while(old<jt->tbase+jt->ttop)if(1<jt->ttop)jtclr(jt,jt->tstack[--jt->ttop]); else tf();
+ while(old<jt->tbase+jt->ttop)if(1<jt->ttop)fr(jt->tstack[--jt->ttop]); else tf();
  R old;
 }
 
 F1(jtdr){
  RZ(w);
- I m=jt->arg; jt->arg=AC(w)-1; AC(w)-=m;
- if(AFLAG(w)&AFREC){
-  if(!(AFLAG(w)&AFCLR)){jt->arg--; AFLAG(w)|=AFCLR;}
-  traverse(w,jtdr); AFLAG(w)-=AFREC;
- }
+ I m=jt->arg; jt->arg=AC(w)-2; AC(w)-=m;
+ if(AFLAG(w)&AFREC){traverse(w,jtdr); AFLAG(w)-=AFREC;}
  jt->arg=m;
  R w;
 }
 void jtderec(J jt,A w){I m=jt->arg; jt->arg=0; jtdr(jt,w); jt->arg=m;}
-F1(jtdpush){tpush(w); derec(w); R w;}
-A jtgc (J jt,A w,I old){ra(w); tpop(old); R jtdpush(jt,w);}
+A jtgc (J jt,A w,I old){derec(w); ra(w); tpop(old); R tpush(w);}
 
 void jtgc3(J jt,A x,A y,A z,I old){
- if(x)ra(x);    if(y)ra(y);    if(z)ra(z);
+ if(x){derec(x);ra(x);} if(y){derec(y);ra(y);} if(z){derec(z);ra(z);}
  tpop(old);
- if(x)jtdpush(jt,x); if(y)jtdpush(jt,y); if(z)jtdpush(jt,z);
+ if(x)tpush(x); if(y)tpush(y); if(z)tpush(z);
 }
 
 
