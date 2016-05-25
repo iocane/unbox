@@ -232,15 +232,20 @@ F1(jttpush){
  R w;
 }
 
+void jtclr(J jt,A w){AFLAG(w)|=AFCLR; fr(w);}
+
 I jttpop(J jt,I old){
- while(old<jt->tbase+jt->ttop)if(1<jt->ttop)fr(jt->tstack[--jt->ttop]); else tf(); 
+ while(old<jt->tbase+jt->ttop)if(1<jt->ttop)jtclr(jt,jt->tstack[--jt->ttop]); else tf();
  R old;
 }
 
 F1(jtdr){
  RZ(w);
  I m=jt->arg; jt->arg=AC(w)-1; AC(w)-=m;
- if(AFLAG(w)&AFREC){traverse(w,jtdr); AFLAG(w)-=AFREC;}
+ if(AFLAG(w)&AFREC){
+  if(!(AFLAG(w)&AFCLR)){jt->arg--; AFLAG(w)|=AFCLR;}
+  traverse(w,jtdr); AFLAG(w)-=AFREC;
+ }
  jt->arg=m;
  R w;
 }

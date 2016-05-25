@@ -149,6 +149,7 @@ typedef I SI;
 #define AFSMM           (I)4            /* SMM managed                     */
 #define AFREL           (I)8            /* uses relative addressing        */
 #define AFREC           (I)16           /* uses recursive reference count  */
+#define AFCLR           (I)32           /* has been popped from the stack  */
 
 #define AABS(rel,k)     ((I)(rel)+(I)(k))   /* absolute address from relative address */
 #define AREL(abs,k)     ((I)(abs)-(I)(k))   /* relative address from absolute address */
