@@ -201,7 +201,7 @@ static DF1(jtredg){PROLOG;DECLF;A y,z;B p;C*u,*v;I i,k,n,old,r,wr,yn,yr,*ys,yt;
  for(i=1;i<n;++i){
   v-=k; 
   GA(y,yt,yn,yr,ys); u=CAV(y); 
-  if(p){A1*wv=(A1*)v,*yv=(A1*)u;I d=(I)w-(I)y; AFLAG(y)=AFREL; DO(yn, yv[i]=d+wv[i];);}else MC(u,v,k); 
+  if(p){A1*wv=(A1*)v,*yv=(A1*)u;I d=(I)w-(I)y; AFLAG(y)|=AFREL; DO(yn, yv[i]=d+wv[i];);}else MC(u,v,k); 
   RZ(z=CALL2(f2,y,z,fs));
   gc(z,old);
  }
@@ -502,7 +502,7 @@ static DF1(jtredcat){A z;B b;I f,r,*s,*v,wr;
  if(!b){v=f+AS(z); RE(*v=mult(s[f],s[1+f])); ICPY(1+v,2+f+s,r-2);}
  if(SPARSE&AT(w))R redcatsp(w,z,r);
  MC(AV(z),AV(w),AN(w)*bp(AT(w)));
- if(ARELATIVE(w)){AFLAG(z)=AFREL; z=relocate((I)w-(I)z,z);}
+ if(ARELATIVE(w)){AFLAG(z)|=AFREL; z=relocate((I)w-(I)z,z);}
  R z;
 }    /* ,/"r w */
 

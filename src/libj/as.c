@@ -215,7 +215,7 @@ static DF1(jtssg){A fs,q,y,z,*zv;AF f2;B p;C*u,*v;I i,k,n,yn,yr,*ys,yt;V*sv=VAV(
  for(i=1;i<n;++i){
   v-=k;
   GA(y,yt,yn,yr,ys); u=CAV(y); 
-  if(p){A1*wv=(A1*)v,*yv=(A1*)u;I d=(I)w-(I)y; AFLAG(y)=AFREL; DO(yn, yv[i]=d+wv[i];);}else MC(u,v,k);
+  if(p){A1*wv=(A1*)v,*yv=(A1*)u;I d=(I)w-(I)y; AFLAG(y)|=AFREL; DO(yn, yv[i]=d+wv[i];);}else MC(u,v,k);
   RZ(*--zv=q=CALL2(f2,y,q,fs));
  }
  R ope(z);

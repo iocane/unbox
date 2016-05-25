@@ -140,7 +140,7 @@ F1(jtope){PROLOG;A cs,*v,y,z;B b,c,h=1;C*x;I d,i,k,m,n,*p,q=RMAX,r=0,*s,t=0,*u,z
   RE(m=prod(r,u)); RE(zn=mult(n,m)); k=bp(t); q=m*k; 
   GA(z,t,zn,r+AR(w),AS(w)); ICPY(AS(z)+AR(w),u,r); x=CAV(z);
   c=b&&t&BOX;
-  if(c){AFLAG(z)=AFREL; p=AV(z); d=AREL(mtv,z); DO(zn, *p++=d;);} else fillv(t,zn,x);
+  if(c){AFLAG(z)|=AFREL; p=AV(z); d=AREL(mtv,z); DO(zn, *p++=d;);} else fillv(t,zn,x);
   for(i=0;i<n;++i){
    y=b?(A)AABS(v[i],w):v[i];
    if(ARELATIVE(y))RZ(y=relocate((I)y-c*(I)z,ca(y)));
@@ -163,7 +163,7 @@ static A jtrazeg(J jt,A w,I t,I n,I r,A*v,B zb){A h,h1,x,y,*yv,z,*zv;B b;C*zu;I 
  }
  *s=c; m=prod(r,s); p=c?k*m/c:0; 
  GA(h1,INT,r,1,0); v1=AV(h1);
- GA(z,t,m,r,s); if(zb)AFLAG(z)=AFREL; 
+ GA(z,t,m,r,s); if(zb)AFLAG(z)|=AFREL; 
  zu=CAV(z); zv=AAV(z);
  for(i=0;i<n;++i){
   y=b?(A)AABS(v[i],w):v[i];
@@ -198,7 +198,7 @@ F1(jtraze){A*v,y,*yv,z,*zv;B b,zb;C*zu;I d,i,k,m=0,n,q,r=1,*s=0,t=0,yt;
  if(!t)DO(n, y=b?(A)AABS(v[i],w):v[i]; t=MAX(t,AT(y)););
  k=bp(t); 
  if(1<r)R razeg(w,t,n,r,v,zb);
- GA(z,t,m,r,0); if(zb&&!(t&DIRECT))AFLAG(z)=AFREL;
+ GA(z,t,m,r,0); if(zb&&!(t&DIRECT))AFLAG(z)|=AFREL;
  zu=CAV(z); zv=AAV(z);
  for(i=0;i<n;++i){
   y=b?(A)AABS(v[i],w):v[i]; 
