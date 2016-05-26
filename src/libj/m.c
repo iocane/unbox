@@ -3,6 +3,8 @@
 /*                                                                         */
 /* Memory Management                                                       */
 
+#include "valgrind/memcheck.h"
+
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -18,6 +20,8 @@
 
 I mhb=sizeof(MS);                  /* # bytes in memory header             */
 I mhw=sizeof(MS)/SZI;              /* # words in memory header             */
+
+I* pools[MLEN];                    /* start ptr of each free list          */
 
 static void jttraverse(J,A,AF);
 
@@ -67,6 +71,7 @@ B jtspfree(J jt){A t;I c,d,i,j,m,n,*u,*v;MS*x;
     jt->mfreeb[i]-=PSIZE;
    }else{x->a=u; u=(I*)v[j]; ++j;}
   }
+  if(pools[i]==0) VALGRIND_CREATE_MEMPOOL(pools[i]=u, 0, 0);
   jt->mfree[i]=u; jt->mfreet[i]=1048576+jt->mfreeb[i];
  }
  R 1;
@@ -151,6 +156,7 @@ void jtfr(J jt,A w){I j,n;MS*x;
  else{                /* pool allocation */
   x->a=jt->mfree[j]; 
   jt->mfree[j]=(I*)x; 
+  VALGRIND_MEMPOOL_FREE(pools[j], jt->mfree[j]);
   jt->mfreeb[j]+=n;
 }}
 
@@ -165,6 +171,7 @@ static A jtma(J jt,I m){A z;C*u;I j,n,p,*v;MS*x;
  n=msize[j];
  if(jt->mfree[j]){         /* allocate from free list         */
   z=(A)(mhw+jt->mfree[j]); 
+  VALGRIND_MEMPOOL_ALLOC(pools[j], jt->mfree[j], p);
   jt->mfree[j]=((MS*)(jt->mfree[j]))->a;
   jt->mfreeb[j]-=n;
  }else if(n>PLIM){         /* large block: straight malloc    */
@@ -178,6 +185,7 @@ static A jtma(J jt,I m){A z;C*u;I j,n,p,*v;MS*x;
   ((MS*)v)->mflag=MFHEAD;
   z=(A)(mhw+v); 
   jt->mfree[j]=((MS*)v)->a;
+  if(pools[j]==0) VALGRIND_CREATE_MEMPOOL(pools[j]=jt->mfree[j]-n, 0, 1);
   jt->mfreeb[j]+=PSIZE-n;
  } 
  JBREAK0;
