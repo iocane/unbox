@@ -8,12 +8,23 @@
 #include <malloc.h>
 #endif
 
+#if (SYS & SYS_UNIX)
+#ifdef TALLOC
+#include <talloc.h>
+#endif
+#endif
+
 #if SY_WIN32 && !SY_WINCE
 #define FREE(a)     HeapFree(jt->heap,0,a)
 #define MALLOC(n)   (void*)HeapAlloc(jt->heap,0,n)
 #else
+#ifdef TALLOC
+#define FREE(a) talloc_free(a)
+#define MALLOC(n) talloc_size(jt->heap,n)
+#else
 #define FREE(a) free(a)
 #define MALLOC(n) malloc(n)
+#endif
 #endif
 
 typedef struct {I*a;S j;C mflag,unused;} MS;

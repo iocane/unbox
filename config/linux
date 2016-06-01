@@ -40,6 +40,11 @@ else
  con_cflags += $(optlevel) -fomit-frame-pointer
 endif
 
+ifeq (@(TALLOC),y)
+ lib_cflags += -DTALLOC
+ lib_lflags += -ltalloc
+endif
+
 jver = src/libj/jver.h
 libj = bin/libj.so
 jcon = bin/jconsole

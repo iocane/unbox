@@ -15,6 +15,9 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <ctype.h>
+#ifdef TALLOC
+#include <talloc.h>
+#endif
 #define _stdcall
 #endif
 
@@ -271,15 +274,29 @@ J JInit(void){
     g_jt=malloc(sizeof(JST));
     if(!g_jt) R 0;
     memset(g_jt,0,sizeof(JST));
+#ifdef TALLOC
+    g_jt->heap = _talloc(NULL,0);
+#endif
     if(!jtglobinit(g_jt)){free(g_jt);g_jt=0; R 0;}
   }
   RZ(jt=malloc(sizeof(JST)));
   memset(jt,0,sizeof(JST));
+#ifdef TALLOC
+  jt->heap = _talloc(NULL,0);
+#endif
   if(!jtjinit2(jt,0,0)){free(jt); R 0;};
   R jt;
 }
 
+#ifdef TALLOC
+int JFree(J jt){
+  talloc_free(jt->heap);
+  free(jt);
+  return 1;
+}
+#else
 int JFree(J jt){return 0;}
+#endif
 #endif
 
 F1(jtbreakfnq){
