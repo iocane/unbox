@@ -213,6 +213,8 @@ F2(jtforeign){I p,q;
   case XC(15,17): R SDERIV(CIBEAM, jtcallbackx,  0,            RMAX,0,   0   );
   case XC(15,18): R SDERIV(CIBEAM, jtnfeoutstr,  0,            RMAX,0,   0   );
 
+  case XC(16, 1): R CDERIV(CIBEAM, jtcsvread1,   jtcsvread2,   0,   1,   0   );
+
   case XC(18,0):  R CDERIV(CIBEAM, jtlocnc,      0,            0,   0,   0   );
   case XC(18,1):  R CDERIV(CIBEAM, jtlocnl1,     jtlocnl2,     RMAX,RMAX,RMAX);
   case XC(18,2):  R CDERIV(CIBEAM, jtlocpath1,   jtlocpath2,   0,   1,   0   );
